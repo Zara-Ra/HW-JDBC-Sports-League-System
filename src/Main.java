@@ -20,8 +20,8 @@ public class Main {
         //then we can create a new league and add the teams
         //then the matches can be added
 
-        FootballService footballService = new FootballService();
-        FootballTeam perspolise = new FootballTeam("Perspolise");
+       LeagueService footballService = new FootballService();
+        /*FootballTeam perspolise = new FootballTeam("Perspolise");
         perspolise.setTeamID(220);
         FootballTeam esteghlal = new FootballTeam("Esteghlal");
         esteghlal.setTeamID(213);
@@ -52,7 +52,8 @@ public class Main {
 
         KhalijeFarsLeague.setTeamList(teamList);
         System.out.println(footballService.addLeague(KhalijeFarsLeague));
-
+*/
+        System.out.println(footballService.TeamInfoByID(217));
 
     }
 }

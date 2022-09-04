@@ -2,7 +2,7 @@ package ir.maktab.sports.data.team;
 
 public abstract class Team {
     private int teamID;
-    private int leagueID;//todo
+    private int leagueID;
     private String teamName;
     private int numOfPlayed;
     private int numOfWon;
@@ -80,8 +80,8 @@ public abstract class Team {
     @Override
     public String toString() {
         return "Team Information of " + teamName+"\n"+
-                ", number Of Matches : " + numOfPlayed +
-                ", number Of Wins :" + numOfWon +
-                ", number Of Lose : " + numOfLost;
+                " Played : " + numOfPlayed +
+                "\t Won :" + numOfWon +
+                "\t Lost : " + numOfLost;
     }
 }

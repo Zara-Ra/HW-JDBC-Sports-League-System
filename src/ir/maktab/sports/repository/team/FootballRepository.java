@@ -2,6 +2,7 @@ package ir.maktab.sports.repository.team;
 
 import ir.maktab.sports.data.League;
 import ir.maktab.sports.data.Match;
+import ir.maktab.sports.data.team.FootballTeam;
 import ir.maktab.sports.data.team.Team;
 import ir.maktab.sports.repository.util.AppConstant;
 
@@ -36,6 +37,32 @@ public class FootballRepository implements TeamRepository {
             return true;
         return false;
 
+    }
+
+    @Override
+    public Team teamInfo(int ID) throws SQLException {
+        String sql = "SELECT * FROM football_team WHERE team_id = ?";
+        PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
+        preparedStatement.setInt(1,ID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if(resultSet.next()){
+            int id  = resultSet.getInt(1);
+            String name = resultSet.getString(2);
+            int played = resultSet.getInt(3);
+            int won = resultSet.getInt(4);
+            int drawn = resultSet.getInt(5);
+            int lost = resultSet.getInt(6);
+            int goalsFor = resultSet.getInt(7);
+            int goalsAgainst = resultSet.getInt(8);
+            int points = resultSet.getInt(9);
+            int leagueID = resultSet.getInt(10);
+
+            Team team = new FootballTeam(name,played,won,lost,points,drawn,goalsFor,goalsAgainst);
+            team.setTeamID(id);
+            team.setLeagueID(leagueID);
+            return team;
+        }
+        return null;
     }
 
     @Override
@@ -79,6 +106,7 @@ public class FootballRepository implements TeamRepository {
         }
         return 0;
     }
+
 }
 
 

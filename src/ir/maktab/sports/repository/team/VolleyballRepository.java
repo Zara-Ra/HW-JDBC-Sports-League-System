@@ -36,6 +36,12 @@ public class VolleyballRepository implements TeamRepository{
             return true;
         return false;
     }
+
+    @Override
+    public Team teamInfo(int ID) throws SQLException {
+        return null;
+    }
+
     public int addMatch(Match match) throws SQLException {
         String sql = "INSERT INTO volleyball_match (home_team_id,away_team_id,home_team_points,away_team_points) VALUES (?,?,?,?)";
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);

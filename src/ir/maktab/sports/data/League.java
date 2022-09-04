@@ -16,12 +16,6 @@ public class League {
     public League(Date startDate) {
         this.startDate = startDate;
     }
-    //private LeagueService leagueService;
-
-   /* public League(List<Team> teamList, List<Match> matchList) {
-        this.teamList = teamList;
-        this.matchList = matchList;
-    }*/
 
     public Date getStartDate() {
         return startDate;
@@ -59,7 +53,4 @@ public class League {
         matchList.add(match);
     }
 
-    public void ranking() {
-        //TODO not sure to implement it here
-    }
 }

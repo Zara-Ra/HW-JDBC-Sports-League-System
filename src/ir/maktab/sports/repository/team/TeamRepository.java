@@ -10,6 +10,7 @@ public interface TeamRepository {
     int addTeam(Team team) throws SQLException;//return new team id
     boolean removeTeam(Team team) throws SQLException;
 
+    Team teamInfo(int ID) throws SQLException;
     int addMatch(Match match) throws SQLException;
 
     int addLeague(League league) throws SQLException;

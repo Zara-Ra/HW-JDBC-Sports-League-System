@@ -21,7 +21,7 @@ public class VolleyballService implements LeagueService {
     }
 
     @Override
-    public Team TeamInfo(Team team) {
+    public Team TeamInfoByID(int ID) {
         return null;
     }
 
@@ -32,7 +32,7 @@ public class VolleyballService implements LeagueService {
 
     @Override
     public int addLeague(League league) throws SQLException {
-        return 0;
+        return volleyballRepository.addLeague(league);
     }
 
     @Override

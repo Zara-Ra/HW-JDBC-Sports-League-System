@@ -10,7 +10,7 @@ public interface LeagueService {
 
     int addTeam(Team team) throws SQLException;
     boolean deleteTeam(Team team) throws SQLException;
-    Team TeamInfo(Team team);
+    Team TeamInfoByID(int ID) throws SQLException;
     int addMatch(Match match) throws SQLException;
     int addLeague(League league) throws SQLException;
     void rankingTable();
