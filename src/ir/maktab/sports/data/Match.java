@@ -2,18 +2,27 @@ package ir.maktab.sports.data;
 
 public class Match {
     int matchID;
-
+    int leagueID; //TODO add to navicat & constructors
     int homeTeamID;
     int awayTeamID;
 
     int homeTeamPoints;
     int awayTeamPoints;
 
-    public Match(int homeTeamID, int awayTeamID, int homeTeamScore, int awayTeamScore) {
+    public Match(int homeTeamID, int awayTeamID, int homeTeamScore, int awayTeamScore, int leagueID) {
         this.homeTeamID = homeTeamID;
         this.awayTeamID = awayTeamID;
         this.homeTeamPoints = homeTeamScore;
         this.awayTeamPoints = awayTeamScore;
+        this.leagueID = leagueID;
+    }
+
+    public int getLeagueID() {
+        return leagueID;
+    }
+
+    public void setLeagueID(int leagueID) {
+        this.leagueID = leagueID;
     }
 
     public int getMatchID() {

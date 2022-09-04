@@ -1,4 +1,4 @@
-package ir.maktab.sports.data.leagues;
+package ir.maktab.sports.data;
 
 import ir.maktab.sports.data.Match;
 import ir.maktab.sports.data.team.Team;

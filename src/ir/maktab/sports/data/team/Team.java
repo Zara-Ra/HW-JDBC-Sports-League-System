@@ -2,6 +2,7 @@ package ir.maktab.sports.data.team;
 
 public abstract class Team {
     private int teamID;
+    private int leagueID;//todo
     private String teamName;
     private int numOfPlayed;
     private int numOfWon;
@@ -14,6 +15,14 @@ public abstract class Team {
         this.numOfWon = numOfWin;
         this.numOfLost = numOfLose;
         this.points = points;
+    }
+
+    public int getLeagueID() {
+        return leagueID;
+    }
+
+    public void setLeagueID(int leagueID) {
+        this.leagueID = leagueID;
     }
 
     public int getPoints() {

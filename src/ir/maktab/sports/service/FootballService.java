@@ -1,8 +1,9 @@
 package ir.maktab.sports.service;
 
 import ir.maktab.sports.data.Match;
+import ir.maktab.sports.data.League;
 import ir.maktab.sports.data.team.Team;
-import ir.maktab.sports.repository.FootballRepository;
+import ir.maktab.sports.repository.team.FootballRepository;
 import ir.maktab.sports.repository.MatchRepository;
 
 import java.sql.SQLException;
@@ -26,10 +27,8 @@ public class FootballService implements LeagueService {
     }
 
     @Override
-    public boolean addMatch(Match match) throws SQLException {
-        if(matchRepository.addFootballMatch(match))
-            return true;
-        return false;
+    public int addMatch(Match match) throws SQLException {
+        return matchRepository.addFootballMatch(match);
     }
 
     @Override

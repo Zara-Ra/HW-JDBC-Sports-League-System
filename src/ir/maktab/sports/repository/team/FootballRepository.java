@@ -1,9 +1,10 @@
-package ir.maktab.sports.repository;
+package ir.maktab.sports.repository.team;
 
-import ir.maktab.sports.data.team.FootballTeam;
 import ir.maktab.sports.data.team.Team;
+import ir.maktab.sports.repository.util.AppConstant;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class FootballRepository implements TeamRepository{
@@ -17,14 +18,17 @@ public class FootballRepository implements TeamRepository{
         String sqlID = "SELECT team_id FROM football_team WHERE team_name = ?";
         PreparedStatement preparedStatement2 = AppConstant.getConnection().prepareStatement(sql);
         preparedStatement2.setString(1,team.getTeamName());
-        preparedStatement2.executeQuery();
-
+        ResultSet resultSet = preparedStatement2.executeQuery();
+        if(resultSet.next())
+            return resultSet.getInt(1);
         return 0;
     }
 
     @Override
-    public int removeTeam(Team team) {
-
-        return 0;
+    public void removeTeam(Team team) throws SQLException {
+        String sql = "DELETE FROM football_team WHERE team_id = ?";
+        PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
+        preparedStatement.setInt(1,team.getTeamID());
+        preparedStatement.executeUpdate();
     }
 }
