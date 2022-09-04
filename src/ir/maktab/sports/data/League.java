@@ -8,19 +8,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public  class League {
+public class League {
     private List<Team> teamList = new ArrayList<>();
     private List<Match> matchList = new ArrayList<>();
-    private LeagueService leagueService;
+    //private LeagueService leagueService;
 
    /* public League(List<Team> teamList, List<Match> matchList) {
         this.teamList = teamList;
         this.matchList = matchList;
     }*/
-
-    public void setLeaugeService(LeagueService leaugeService) {
-        this.leagueService = leaugeService;
-    }
 
     public List<Team> getTeamList() {
         return teamList;
@@ -30,18 +26,12 @@ public  class League {
         this.teamList = teamList;
     }
 
-    public void teamInfo(Team team){
-        leagueService.TeamInfo(team);
+    public void addTeam(Team team) {
+        teamList.add(team);
     }
 
-    public void addTeam(Team team){
-        if(leagueService.addTeam(team))
-            teamList.add(team);
-    }
-
-    public void deleteTeam(Team team){
-        if(leagueService.deleteTeam(team))
-            teamList.remove(team);
+    public void deleteTeam(Team team) {
+        teamList.remove(team);
     }
 
     public List<Match> getMatchList() {
@@ -52,14 +42,11 @@ public  class League {
         this.matchList = matchList;
     }
 
-    public boolean addMatch(Match match) throws SQLException {
-        if(leagueService.addMatch(match)) {
-            matchList.add(match);
-            return true;
-        }
-        return false;
+    public void addMatch(Match match) throws SQLException {
+        matchList.add(match);
     }
-    public void ranking(){
-        leagueService.rankingTable();
+
+    public void ranking() {
+        //TODO not sure to implement it here
     }
 }
