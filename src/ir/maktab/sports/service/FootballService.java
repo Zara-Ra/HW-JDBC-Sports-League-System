@@ -28,7 +28,9 @@ public class FootballService implements LeagueService {
 
     @Override
     public int addMatch(Match match) throws SQLException {
-        return footballRepository.addMatch(match);
+        int matchID = footballRepository.addMatch(match);
+
+        return matchID;
     }
 
     @Override

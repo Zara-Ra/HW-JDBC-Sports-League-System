@@ -1,20 +1,39 @@
 package ir.maktab.sports.data;
 
 public class Match {
-    int matchID;
-    int leagueID; //TODO add to navicat & constructors
-    int homeTeamID;
-    int awayTeamID;
+    private int matchID;
+    private int leagueID;
+    private int homeTeamID;
+    private int awayTeamID;
+    private int homeTeamPoints;
+    private int awayTeamPoints;
+    private    int homeTeamScore;
+    private int awayTeamScore;
 
-    int homeTeamPoints;
-    int awayTeamPoints;
-
-    public Match(int homeTeamID, int awayTeamID, int homeTeamScore, int awayTeamScore, int leagueID) {
+    public Match(int homeTeamID, int awayTeamID, int homeTeamPoints, int awayTeamPoints, int leagueID,int homeTeamScore,int awayTeamScore) {
         this.homeTeamID = homeTeamID;
         this.awayTeamID = awayTeamID;
-        this.homeTeamPoints = homeTeamScore;
-        this.awayTeamPoints = awayTeamScore;
+        this.homeTeamPoints = homeTeamPoints;
+        this.awayTeamPoints = awayTeamPoints;
         this.leagueID = leagueID;
+        this.homeTeamScore = homeTeamScore;
+        this.awayTeamScore = awayTeamScore;
+    }
+
+    public int getHomeTeamScore() {
+        return homeTeamScore;
+    }
+
+    public void setHomeTeamScore(int homeTeamScore) {
+        this.homeTeamScore = homeTeamScore;
+    }
+
+    public int getAwayTeamScore() {
+        return awayTeamScore;
+    }
+
+    public void setAwayTeamScore(int awayTeamScore) {
+        this.awayTeamScore = awayTeamScore;
     }
 
     public int getLeagueID() {

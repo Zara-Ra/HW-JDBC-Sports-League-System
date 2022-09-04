@@ -9,8 +9,13 @@ public class VolleyballTeam extends Team{
         super(teamName);
     }
 
+    @Override
+    public int calculatePoints() {
+        return 0;
+    }
+
     public VolleyballTeam(String teamName, int numOfMatch, int numOfWin, int numOfLose, int points, int[] sets) {
-        super(teamName, numOfMatch, numOfWin, numOfLose, points);
+        super(teamName, numOfMatch, numOfWin, numOfLose);
         this.sets = sets;
     }
 

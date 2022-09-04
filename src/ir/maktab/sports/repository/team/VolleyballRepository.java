@@ -2,7 +2,9 @@ package ir.maktab.sports.repository.team;
 
 import ir.maktab.sports.data.League;
 import ir.maktab.sports.data.Match;
+import ir.maktab.sports.data.team.FootballTeam;
 import ir.maktab.sports.data.team.Team;
+import ir.maktab.sports.data.team.VolleyballTeam;
 import ir.maktab.sports.repository.util.AppConstant;
 
 import java.sql.PreparedStatement;
@@ -39,6 +41,28 @@ public class VolleyballRepository implements TeamRepository{
 
     @Override
     public Team teamInfo(int ID) throws SQLException {
+        String sql = "SELECT * FROM volleyball_team WHERE team_id = ?";
+        PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
+        preparedStatement.setInt(1,ID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if(resultSet.next()){
+            int id  = resultSet.getInt(1);
+            String name = resultSet.getString(2);
+            int played = resultSet.getInt(3);
+            int won = resultSet.getInt(4);
+            int lost = resultSet.getInt(5);
+            int sets[] = new int[2];
+            sets[0] = resultSet.getInt(6);
+            sets[1] = resultSet.getInt(7);
+            int points = resultSet.getInt(8);
+            int leagueID = resultSet.getInt(9);
+
+
+            Team team = new VolleyballTeam(name,played,won,lost,points,sets);
+            team.setTeamID(id);
+            team.setLeagueID(leagueID);
+            return team;
+        }
         return null;
     }
 

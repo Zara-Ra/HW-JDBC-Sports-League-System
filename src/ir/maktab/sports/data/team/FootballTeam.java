@@ -9,8 +9,15 @@ public class FootballTeam extends Team{
         super(teamName);
     }
 
+    @Override
+    public int calculatePoints() {
+        int points = super.getNumOfWon() * 3 + drawn;
+        this.setPoints(points);
+        return points;
+    }
+
     public FootballTeam(String teamName, int numOfMatch, int numOfWin, int numOfLose, int points, int drawn, int goalsFor, int goalsAgainst) {
-        super(teamName, numOfMatch, numOfWin, numOfLose, points);
+        super(teamName, numOfMatch, numOfWin, numOfLose);
         this.drawn = drawn;
         this.goalsFor = goalsFor;
         this.goalsAgainst = goalsAgainst;

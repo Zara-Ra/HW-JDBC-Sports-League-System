@@ -13,13 +13,13 @@ public abstract class Team {
         this.teamName = teamName;
     }
 
-    public Team(String teamName, int numOfMatch, int numOfWin, int numOfLose, int points) {
+    public Team(String teamName, int numOfMatch, int numOfWin, int numOfLose) {
         this.teamName = teamName;
         this.numOfPlayed = numOfMatch;
         this.numOfWon = numOfWin;
         this.numOfLost = numOfLose;
-        this.points = points;
     }
+
 
     public int getLeagueID() {
         return leagueID;
@@ -36,6 +36,8 @@ public abstract class Team {
     public void setPoints(int points) {
         this.points = points;
     }
+
+    public abstract int calculatePoints();
 
     public int getTeamID() {
         return teamID;

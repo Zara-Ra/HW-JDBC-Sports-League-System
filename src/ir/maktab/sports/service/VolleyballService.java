@@ -21,8 +21,8 @@ public class VolleyballService implements LeagueService {
     }
 
     @Override
-    public Team TeamInfoByID(int ID) {
-        return null;
+    public Team TeamInfoByID(int ID) throws SQLException {
+        return volleyballRepository.teamInfo(ID);
     }
 
     @Override
