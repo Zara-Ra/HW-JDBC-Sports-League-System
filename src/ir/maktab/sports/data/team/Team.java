@@ -9,6 +9,10 @@ public abstract class Team {
     private int numOfLost;
     private int points;
 
+    public Team(String teamName) {
+        this.teamName = teamName;
+    }
+
     public Team(String teamName, int numOfMatch, int numOfWin, int numOfLose, int points) {
         this.teamName = teamName;
         this.numOfPlayed = numOfMatch;

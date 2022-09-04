@@ -5,7 +5,11 @@ public class FootballTeam extends Team{
     private int goalsFor;
     private int goalsAgainst;
 
-    public FootballTeam(String teamName, int numOfMatch, int numOfWin, int numOfLose, int points,int drawn,int goalsFor,int goalsAgainst) {
+    public FootballTeam(String teamName) {
+        super(teamName);
+    }
+
+    public FootballTeam(String teamName, int numOfMatch, int numOfWin, int numOfLose, int points, int drawn, int goalsFor, int goalsAgainst) {
         super(teamName, numOfMatch, numOfWin, numOfLose, points);
         this.drawn = drawn;
         this.goalsFor = goalsFor;

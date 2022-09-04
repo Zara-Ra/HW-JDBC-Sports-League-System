@@ -1,24 +1,24 @@
 package ir.maktab.sports.service;
 
-import ir.maktab.sports.data.Match;
 import ir.maktab.sports.data.League;
+import ir.maktab.sports.data.Match;
 import ir.maktab.sports.data.team.Team;
 import ir.maktab.sports.repository.team.FootballRepository;
-import ir.maktab.sports.repository.MatchRepository;
 
 import java.sql.SQLException;
 
 public class FootballService implements LeagueService {
-    private MatchRepository matchRepository = new MatchRepository();
+
     private FootballRepository footballRepository = new FootballRepository();
+
     @Override
-    public boolean addTeam(Team team) {
-        return false;
+    public int addTeam(Team team) throws SQLException {
+        return footballRepository.addTeam(team);
     }
 
     @Override
-    public boolean deleteTeam(Team team) {
-        return false;
+    public boolean deleteTeam(Team team) throws SQLException {
+        return footballRepository.removeTeam(team);
     }
 
     @Override
@@ -28,8 +28,14 @@ public class FootballService implements LeagueService {
 
     @Override
     public int addMatch(Match match) throws SQLException {
-        return matchRepository.addFootballMatch(match);
+        return footballRepository.addMatch(match);
     }
+
+    @Override
+    public int addLeague(League league) throws SQLException {
+        return footballRepository.addLeague(league);
+    }
+
 
     @Override
     public void rankingTable() {
