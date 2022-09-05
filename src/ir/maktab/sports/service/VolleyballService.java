@@ -6,6 +6,7 @@ import ir.maktab.sports.data.team.Team;
 import ir.maktab.sports.repository.team.VolleyballRepository;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class VolleyballService implements LeagueService {
     private VolleyballRepository volleyballRepository = new VolleyballRepository();
@@ -79,7 +80,7 @@ public class VolleyballService implements LeagueService {
     }
 
     @Override
-    public void rankingTable() {
+    public void rankingTable(List<Team> teamList) {
 
     }
 

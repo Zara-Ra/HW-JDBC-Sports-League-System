@@ -7,6 +7,7 @@ import ir.maktab.sports.data.team.Team;
 import ir.maktab.sports.repository.team.FootballRepository;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class FootballService implements LeagueService {
 
@@ -111,7 +112,7 @@ public class FootballService implements LeagueService {
     }
 
     @Override
-    public void rankingTable() {
+    public void rankingTable(List<Team> teamList) {
 
     }
 

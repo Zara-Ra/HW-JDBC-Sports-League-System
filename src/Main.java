@@ -190,6 +190,7 @@ public class Main {
                 secondMenu();
                 break;
             case 6:
+                leagueService.rankingTable();
                 break;
             case 7:
                 break;
