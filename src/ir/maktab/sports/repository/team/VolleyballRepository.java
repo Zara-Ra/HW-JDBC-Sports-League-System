@@ -68,6 +68,17 @@ public class VolleyballRepository implements TeamRepository {
 
     @Override
     public boolean updateTeam(Team team) throws SQLException {
+        String sql = "UPDATE volleyball_team SET played=?,won=?,lost=?,won_set=?,lost_set=?,points=? WHERE team_id = ?";
+        PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
+        preparedStatement.setInt(1,team.getPlayed());
+        preparedStatement.setInt(2,team.getWon());
+        preparedStatement.setInt(3,team.getLost());
+        preparedStatement.setInt(4,((VolleyballTeam) team).getSets()[0]);
+        preparedStatement.setInt(5,((VolleyballTeam) team).getSets()[1]);
+        preparedStatement.setInt(6,team.getPoints());
+        preparedStatement.setInt(7,team.getTeamID());
+        if(preparedStatement.executeUpdate() != 0)
+            return true;
         return false;
     }
 

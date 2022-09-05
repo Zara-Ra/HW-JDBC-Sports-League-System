@@ -4,17 +4,17 @@ public abstract class Team {
     private int teamID;
     private int leagueID;
     private String teamName;
-    private int numOfPlayed;
-    private int numOfWon;
-    private int numOfLost;
+    private int Played;
+    private int won;
+    private int lost;
     private int points;
 
-    public Team(int teamID, int leagueID, int numOfPlayed, int numOfWon, int numOfLost, int points) {
+    public Team(int teamID, int leagueID, int Played, int won, int lost, int points) {
         this.teamID = teamID;
         this.leagueID = leagueID;
-        this.numOfPlayed = numOfPlayed;
-        this.numOfWon = numOfWon;
-        this.numOfLost = numOfLost;
+        this.Played = Played;
+        this.won = won;
+        this.lost = lost;
         this.points = points;
     }
 
@@ -24,9 +24,9 @@ public abstract class Team {
 
     public Team(String teamName, int numOfMatch, int numOfWin, int numOfLose,int points) {
         this.teamName = teamName;
-        this.numOfPlayed = numOfMatch;
-        this.numOfWon = numOfWin;
-        this.numOfLost = numOfLose;
+        this.Played = numOfMatch;
+        this.won = numOfWin;
+        this.lost = numOfLose;
         this.points = points;
     }
 
@@ -65,35 +65,35 @@ public abstract class Team {
         this.teamName = teamName;
     }
 
-    public int getNumOfPlayed() {
-        return numOfPlayed;
+    public int getPlayed() {
+        return Played;
     }
 
-    public void setNumOfPlayed(int numOfPlayed) {
-        this.numOfPlayed = numOfPlayed;
+    public void setPlayed(int played) {
+        this.Played = played;
     }
 
-    public int getNumOfWon() {
-        return numOfWon;
+    public int getWon() {
+        return won;
     }
 
-    public void setNumOfWon(int numOfWon) {
-        this.numOfWon = numOfWon;
+    public void setWon(int won) {
+        this.won = won;
     }
 
-    public int getNumOfLost() {
-        return numOfLost;
+    public int getLost() {
+        return lost;
     }
 
-    public void setNumOfLost(int numOfLost) {
-        this.numOfLost = numOfLost;
+    public void setLost(int lost) {
+        this.lost = lost;
     }
 
     @Override
     public String toString() {
         return "Team Information of " + teamName+"\n"+
-                " Played : " + numOfPlayed +
-                "\t Won :" + numOfWon +
-                "\t Lost : " + numOfLost;
+                " Played : " + Played +
+                "\t Won :" + won +
+                "\t Lost : " + lost;
     }
 }

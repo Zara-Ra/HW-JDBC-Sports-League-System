@@ -18,7 +18,7 @@ public class FootballTeam extends Team{
 
     @Override
     public int calculatePoints() {
-        int points = super.getNumOfWon() * 3 + drawn;
+        int points = super.getWon() * 3 + drawn;
         this.setPoints(points);
         return points;
     }
@@ -58,10 +58,10 @@ public class FootballTeam extends Team{
     public String toString() {
 
         return "Team Information Of " + super.getTeamName()+"\n"+
-                " Played : " + super.getNumOfPlayed() +
-                "\t Won :" + super.getNumOfWon() +
+                " Played : " + super.getPlayed() +
+                "\t Won :" + super.getWon() +
                 "\t Drawn : " + drawn +
-                "\t Lost : " + super.getNumOfLost()+
+                "\t Lost : " + super.getLost()+
                 "\t GF : " + goalsFor +
                 "\t GA : " + goalsAgainst +
                 "\t POINTS : "+ super.getPoints();

@@ -55,8 +55,8 @@ public class FootballService implements LeagueService {
         FootballTeam homeT = (FootballTeam) league.findTeam(match.getHomeTeamID());
         FootballTeam awayT = (FootballTeam) league.findTeam(match.getAwayTeamID());
 
-        homeT.setNumOfPlayed(homeT.getNumOfPlayed() + 1);
-        awayT.setNumOfPlayed(awayT.getNumOfPlayed() + 1);
+        homeT.setPlayed(homeT.getPlayed() + 1);
+        awayT.setPlayed(awayT.getPlayed() + 1);
 
         homeT.setGoalsFor(homeT.getGoalsFor() + match.getHomeTeamScore());
         homeT.setGoalsAgainst(homeT.getGoalsAgainst() + match.getAwayTeamScore());
@@ -64,21 +64,17 @@ public class FootballService implements LeagueService {
         awayT.setGoalsFor(awayT.getGoalsFor() + match.getHomeTeamScore());
         awayT.setGoalsAgainst(awayT.getGoalsAgainst() + match.getHomeTeamScore());
 
+        homeT.setPoints(homeT.getPoints() + match.getHomeTeamPoints());
+        awayT.setPoints(awayT.getPoints() + match.getAwayTeamPoints());
         if (match.getHomeTeamScore() > match.getAwayTeamScore()) {
-            homeT.setPoints(homeT.getPoints() + 3);
-            homeT.setNumOfWon(homeT.getNumOfWon() + 1);
-            awayT.setNumOfLost(awayT.getNumOfLost() + 1);
-        }
-        else if (match.getHomeTeamScore() == match.getAwayTeamScore()) {
-            homeT.setPoints(homeT.getPoints() + 1);
-            awayT.setPoints(awayT.getPoints() + 1);
+            homeT.setWon(homeT.getWon() + 1);
+            awayT.setLost(awayT.getLost() + 1);
+        } else if (match.getHomeTeamScore() == match.getAwayTeamScore()) {
             homeT.setDrawn(homeT.getDrawn() + 1);
             awayT.setDrawn(awayT.getDrawn() + 1);
-        }
-        else {
-            awayT.setPoints(awayT.getPoints() + 3);
-            awayT.setNumOfWon(awayT.getNumOfWon() + 1);
-            homeT.setNumOfLost(homeT.getNumOfLost() + 1);
+        } else {
+            awayT.setWon(awayT.getWon() + 1);
+            homeT.setLost(homeT.getLost() + 1);
         }
         footballRepository.updateTeam(homeT);
         footballRepository.updateTeam(awayT);

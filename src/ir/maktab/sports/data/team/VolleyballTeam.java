@@ -1,9 +1,7 @@
 package ir.maktab.sports.data.team;
 
-import java.util.Arrays;
-
 public class VolleyballTeam extends Team{
-    private int [] sets = new int[2];// 1: number of won sets 2: number of lost sets
+    private int [] sets = new int[2];// 0: number of won sets 1: number of lost sets
 
     public VolleyballTeam(String teamName) {
         super(teamName);
@@ -24,15 +22,16 @@ public class VolleyballTeam extends Team{
     }
 
     public void setSets(int[] sets) {
-        this.sets = sets;
+        this.sets[0] += sets[0];
+        this.sets[1] += sets[1];
     }
 
     @Override
     public String toString() {
         return "Volleyball Team " + super.getTeamName()+
-                " Played : "+super.getNumOfPlayed()+
-                "\t Won : "+super.getNumOfWon()+
-                "\t Lost : "+super.getNumOfLost()+
+                " Played : "+super.getPlayed()+
+                "\t Won : "+super.getWon()+
+                "\t Lost : "+super.getLost()+
                 "\t Sets "+ sets[0] + ":" + sets[1];
     }
 }

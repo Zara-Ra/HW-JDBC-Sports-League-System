@@ -69,10 +69,10 @@ public class FootballRepository implements TeamRepository {
     public boolean updateTeam(Team team) throws SQLException {
         String sql = "UPDATE football_team SET played = ?,won = ?, drawn = ?,lost = ?,goals_for = ?,goals_against = ?,points = ? WHERE team_id = ? ";
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
-        preparedStatement.setInt(1,team.getNumOfPlayed());
-        preparedStatement.setInt(2,team.getNumOfWon());
+        preparedStatement.setInt(1,team.getPlayed());
+        preparedStatement.setInt(2,team.getWon());
         preparedStatement.setInt(3,((FootballTeam) team).getDrawn());
-        preparedStatement.setInt(4,team.getNumOfLost());
+        preparedStatement.setInt(4,team.getLost());
         preparedStatement.setInt(5,((FootballTeam) team).getGoalsFor());
         preparedStatement.setInt(6,((FootballTeam) team).getGoalsAgainst());
         preparedStatement.setInt(7,team.getPoints());
