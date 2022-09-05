@@ -20,6 +20,12 @@ public class Match {
         this.awayTeamScore = awayTeamScore;
     }
 
+    public Match(int leagueID, int homeTeamID, int awayTeamID) {
+        this.leagueID = leagueID;
+        this.homeTeamID = homeTeamID;
+        this.awayTeamID = awayTeamID;
+    }
+
     public int getHomeTeamScore() {
         return homeTeamScore;
     }

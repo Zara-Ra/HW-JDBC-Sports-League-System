@@ -66,13 +66,31 @@ public class FootballRepository implements TeamRepository {
     }
 
     @Override
+    public boolean updateTeam(Team team) throws SQLException {
+        String sql = "UPDATE football_team SET played = ?,won = ?, drawn = ?,lost = ?,goals_for = ?,goals_against = ?,points = ? WHERE team_id = ? ";
+        PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
+        preparedStatement.setInt(1,team.getNumOfPlayed());
+        preparedStatement.setInt(2,team.getNumOfWon());
+        preparedStatement.setInt(3,((FootballTeam) team).getDrawn());
+        preparedStatement.setInt(4,team.getNumOfLost());
+        preparedStatement.setInt(5,((FootballTeam) team).getGoalsFor());
+        preparedStatement.setInt(6,((FootballTeam) team).getGoalsAgainst());
+        preparedStatement.setInt(7,team.getPoints());
+        preparedStatement.setInt(8,team.getTeamID());
+
+        if (preparedStatement.executeUpdate() != 0)
+            return true;
+        return false;
+
+    }
+
+    @Override
     public int addMatch(Match match) throws SQLException {
-        String sql = "INSERT INTO football_match (home_team_id,away_team_id,home_team_points,away_team_points) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO football_match (home_team_id,away_team_id,league_id) VALUES (?,?,?)";
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, match.getHomeTeamID());
         preparedStatement.setInt(2, match.getAwayTeamID());
-        preparedStatement.setInt(3, match.getHomeTeamPoints());
-        preparedStatement.setInt(4, match.getAwayTeamPoints());
+        preparedStatement.setInt(3, match.getLeagueID());
         preparedStatement.executeUpdate();
 
         String sqlForID = "SELECT match_id FROM football_match WHERE home_team_id = ? AND away_team_id = ?";
@@ -84,6 +102,21 @@ public class FootballRepository implements TeamRepository {
             return resultSet.getInt(1);
         }
         return 0;
+    }
+
+    @Override
+    public boolean updatMatch(Match match) throws SQLException {
+        String sql = "UPDATE football_match SET home_team_points = ?,away_team_points = ?,home_team_score=?,away_team_score=? WHERE home_team_id = ? AND away_team_id = ?";
+        PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
+        preparedStatement.setInt(1,match.getHomeTeamPoints() );
+        preparedStatement.setInt(2, match.getAwayTeamPoints());
+        preparedStatement.setInt(3, match.getHomeTeamScore());
+        preparedStatement.setInt(4, match.getAwayTeamScore());
+        preparedStatement.setInt(5, match.getHomeTeamID());
+        preparedStatement.setInt(6, match.getAwayTeamID());
+        if (preparedStatement.executeUpdate() != 0)
+            return true;
+        return false;
     }
 
     @Override
@@ -116,7 +149,6 @@ public class FootballRepository implements TeamRepository {
         if (preparedStatement.executeUpdate() != 0)
             return true;
         return false;
-
     }
 
     @Override

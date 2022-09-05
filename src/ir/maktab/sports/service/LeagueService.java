@@ -8,10 +8,10 @@ import java.sql.SQLException;
 
 public interface LeagueService {
 
-    int addTeam(Team team) throws SQLException;
+    int addTeam(League league,Team team) throws SQLException;
     boolean deleteTeam(Team team) throws SQLException;
     Team TeamInfoByID(int ID) throws SQLException;
-    int addMatch(Match match) throws SQLException;
+    boolean addMatch(League league,Match match) throws SQLException;
     int addLeague(League league) throws SQLException;
     void rankingTable();
 }

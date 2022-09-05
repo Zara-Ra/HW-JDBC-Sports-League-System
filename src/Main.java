@@ -141,15 +141,53 @@ public class Main {
                     firstMenu();
                 }
                 newTeam.setLeagueID(league.getLeagueID());
+                int teamID = leagueService.addTeam(league,newTeam);
+                newTeam.setTeamID(teamID);
                 league.addTeam(newTeam);
-                int teamID = leagueService.addTeam(newTeam);
-                int indexofnewteam = league.getTeamList().size();
-                league.getTeamList().get(indexofnewteam-1).setTeamID(teamID);
+
                 secondMenu();
                 break;
             case 4:
+                Team homeTeam = null;
+                Team awayTeam = null;
+                int homeScore,awayScore,homePoint,awayPoint;
+                System.out.println("Enter Home Team Information for the Match: ");
+                System.out.println("Name : ");
+                homeTeam = league.findTeam(scanner.nextLine());
+                if(homeTeam == null) {
+                    System.out.println("Team not in current League");
+                    secondMenu();
+                    break;
+                }
+                System.out.println("Score : ");
+                homeScore = Integer.parseInt(scanner.nextLine());
+                System.out.println("Points : ");
+                homePoint = Integer.parseInt(scanner.nextLine());
+
+                System.out.println("Enter Away Team Information for the Match: ");
+                System.out.println("Name : ");
+                awayTeam = league.findTeam(scanner.nextLine());
+                if(awayTeam == null) {
+                    System.out.println("Team not in current League");
+                    secondMenu();
+                    break;
+                }
+                System.out.println("Score : ");
+                awayScore = Integer.parseInt(scanner.nextLine());
+                System.out.println("Points : ");
+                awayPoint = Integer.parseInt(scanner.nextLine());
+
+                Match match = new Match(homeTeam.getTeamID(),awayTeam.getTeamID(),homePoint,awayPoint,league.getLeagueID(),homeScore,awayScore);
+                match.setLeagueID(league.getLeagueID());
+                leagueService.addMatch(league, match);
+                secondMenu();
                 break;
             case 5:
+                System.out.println("Enter Team name to See Info: ");
+                Team team = league.findTeam(scanner.nextLine());
+                team = leagueService.TeamInfoByID(team.getTeamID());
+                System.out.println(team);
+                secondMenu();
                 break;
             case 6:
                 break;

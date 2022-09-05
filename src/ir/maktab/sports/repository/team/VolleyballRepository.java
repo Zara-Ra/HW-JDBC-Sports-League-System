@@ -66,13 +66,17 @@ public class VolleyballRepository implements TeamRepository {
         return null;
     }
 
+    @Override
+    public boolean updateTeam(Team team) throws SQLException {
+        return false;
+    }
+
     public int addMatch(Match match) throws SQLException {
-        String sql = "INSERT INTO volleyball_match (home_team_id,away_team_id,home_team_points,away_team_points) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO volleyball_match (home_team_id,away_team_id,league_id) VALUES (?,?,?)";
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, match.getHomeTeamID());
         preparedStatement.setInt(2, match.getAwayTeamID());
-        preparedStatement.setInt(3, match.getHomeTeamPoints());
-        preparedStatement.setInt(4, match.getAwayTeamPoints());
+        preparedStatement.setInt(3, match.getLeagueID());
         preparedStatement.executeUpdate();
 
         String sqlForID = "SELECT match_id FROM volleyball_match WHERE home_team_id = ? AND away_team_id = ?";
@@ -84,7 +88,21 @@ public class VolleyballRepository implements TeamRepository {
             return resultSet.getInt(1);
         }
         return 0;
+    }
 
+    @Override
+    public boolean updatMatch(Match match) throws SQLException {
+        String sql = "UPDATE volleyball_match SET home_team_points = ?,away_team_points = ?,home_team_score=?,away_team_score=? WHERE home_team_id = ? AND away_team_id = ?";
+        PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
+        preparedStatement.setInt(1,match.getHomeTeamPoints() );
+        preparedStatement.setInt(2, match.getAwayTeamPoints());
+        preparedStatement.setInt(3, match.getHomeTeamScore());
+        preparedStatement.setInt(4, match.getAwayTeamScore());
+        preparedStatement.setInt(5, match.getHomeTeamID());
+        preparedStatement.setInt(6, match.getAwayTeamID());
+        if (preparedStatement.executeUpdate() != 0)
+            return true;
+        return false;
     }
 
     @Override

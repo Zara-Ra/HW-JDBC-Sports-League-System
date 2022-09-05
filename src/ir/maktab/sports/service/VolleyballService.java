@@ -11,10 +11,25 @@ public class VolleyballService implements LeagueService {
     private VolleyballRepository volleyballRepository = new VolleyballRepository();
 
     @Override
-    public int addTeam(Team team) throws SQLException {
+    public int addTeam(League league,Team team) throws SQLException {
         int teamID = volleyballRepository.addTeam(team);
         team.setTeamID(teamID);
+        volleyballRepository.setTeamsLeagueID(team,league.getLeagueID());
+        team.setLeagueID(league.getLeagueID());
         volleyballRepository.updateLeague(team);
+        int initialSize = league.getTeamList().size();
+        for (int i = 0; i < initialSize ; i++) {
+            Match match = new Match(league.getLeagueID(),team.getTeamID(),league.getTeamList().get(i).getTeamID());
+            int matchID = volleyballRepository.addMatch(match);
+            match.setMatchID(matchID);
+            league.addMatch(match);
+        }
+        for (int i = 0; i < initialSize; i++) {
+            Match match = new Match(league.getLeagueID(),league.getTeamList().get(i).getTeamID(),team.getTeamID());
+            int matchID = volleyballRepository.addMatch(match);
+            match.setMatchID(matchID);
+            league.addMatch(match);
+        }
         return teamID;
     }
 
@@ -29,13 +44,15 @@ public class VolleyballService implements LeagueService {
     }
 
     @Override
-    public int addMatch(Match match) throws SQLException {
-        return volleyballRepository.addMatch(match);
+    public boolean addMatch(League league,Match match) throws SQLException {
+        //volleyballRepository.updateTeam();
+        return volleyballRepository.updatMatch(match);
     }
 
     @Override
     public int addLeague(League league) throws SQLException {
-        for (int i = 0; i < league.getTeamList().size(); i++) {
+        int initialListsize = league.getTeamList().size();
+        for (int i = 0; i < initialListsize; i++) {
             int teamID = volleyballRepository.addTeam(league.getTeamList().get(i));
             league.getTeamList().get(i).setTeamID(teamID);
         }
@@ -43,8 +60,20 @@ public class VolleyballService implements LeagueService {
         int leagueID = volleyballRepository.addLeague(league);
         league.setLeagueID(leagueID);
 
-        for (int i = 0; i < league.getTeamList().size(); i++) {
+        for (int i = 0; i < initialListsize; i++) {
             volleyballRepository.setTeamsLeagueID(league.getTeamList().get(i) , leagueID);
+        }
+        for (int i = 0; i < initialListsize; i++) {
+            for (int j = 0; j < initialListsize; j++) {
+                Team hometeam = league.getTeamList().get(i);
+                Team awayteam = league.getTeamList().get(j);
+                if(!hometeam.equals(awayteam)) {
+                    Match match = new Match(leagueID,hometeam.getTeamID(),awayteam.getTeamID());
+                    int matchID = volleyballRepository.addMatch(match);
+                    match.setMatchID(matchID);
+                    league.addMatch(match);
+                }
+            }
         }
         return leagueID;
     }

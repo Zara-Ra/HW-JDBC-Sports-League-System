@@ -15,7 +15,7 @@ public class VolleyballTeam extends Team{
     }
 
     public VolleyballTeam(String teamName, int numOfMatch, int numOfWin, int numOfLose, int points, int[] sets) {
-        super(teamName, numOfMatch, numOfWin, numOfLose);
+        super(teamName, numOfMatch, numOfWin, numOfLose,points);
         this.sets = sets;
     }
 

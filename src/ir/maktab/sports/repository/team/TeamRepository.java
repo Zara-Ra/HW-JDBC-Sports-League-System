@@ -11,8 +11,10 @@ public interface TeamRepository {
     boolean removeTeam(Team team) throws SQLException;
 
     Team teamInfo(int ID) throws SQLException;
-    int addMatch(Match match) throws SQLException; //TODO when a match is added the team_table should be updated too.
+    boolean updateTeam(Team team) throws SQLException;
+    int addMatch(Match match) throws SQLException;
 
+    boolean updatMatch(Match match) throws SQLException;
     int addLeague(League league) throws SQLException;
 
     boolean setTeamsLeagueID(Team team, int leagueID) throws SQLException;

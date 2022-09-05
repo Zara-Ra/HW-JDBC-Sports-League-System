@@ -9,15 +9,25 @@ public abstract class Team {
     private int numOfLost;
     private int points;
 
+    public Team(int teamID, int leagueID, int numOfPlayed, int numOfWon, int numOfLost, int points) {
+        this.teamID = teamID;
+        this.leagueID = leagueID;
+        this.numOfPlayed = numOfPlayed;
+        this.numOfWon = numOfWon;
+        this.numOfLost = numOfLost;
+        this.points = points;
+    }
+
     public Team(String teamName) {
         this.teamName = teamName;
     }
 
-    public Team(String teamName, int numOfMatch, int numOfWin, int numOfLose) {
+    public Team(String teamName, int numOfMatch, int numOfWin, int numOfLose,int points) {
         this.teamName = teamName;
         this.numOfPlayed = numOfMatch;
         this.numOfWon = numOfWin;
         this.numOfLost = numOfLose;
+        this.points = points;
     }
 
 

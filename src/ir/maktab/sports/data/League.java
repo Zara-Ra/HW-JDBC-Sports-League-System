@@ -60,7 +60,7 @@ public class League {
     }
     public Team findTeam(String name){
         for (int i = 0; i < teamList.size(); i++) {
-            if(name.equals(teamList.get(i).getTeamID()))
+            if(name.equals(teamList.get(i).getTeamName()))
                 return teamList.get(i);
         }
         return null;
