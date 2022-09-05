@@ -190,7 +190,11 @@ public class Main {
                 secondMenu();
                 break;
             case 6:
-                leagueService.rankingTable();
+                leagueService.rankingTable(league.getTeamList());
+                for (int i = 0; i <league.getTeamList().size() ; i++) {
+                    System.out.println(league.getTeamList().get(i));
+                }
+                secondMenu();
                 break;
             case 7:
                 break;

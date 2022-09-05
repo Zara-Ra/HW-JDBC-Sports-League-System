@@ -2,11 +2,14 @@ package ir.maktab.sports.service;
 
 import ir.maktab.sports.data.League;
 import ir.maktab.sports.data.Match;
+import ir.maktab.sports.data.sortHelper.sortByDiffGoal;
+import ir.maktab.sports.data.sortHelper.sortByPoints;
 import ir.maktab.sports.data.team.FootballTeam;
 import ir.maktab.sports.data.team.Team;
 import ir.maktab.sports.repository.team.FootballRepository;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 public class FootballService implements LeagueService {
@@ -113,7 +116,8 @@ public class FootballService implements LeagueService {
 
     @Override
     public void rankingTable(List<Team> teamList) {
-
+        Collections.sort(teamList, new sortByPoints());
+        Collections.sort(teamList, new sortByDiffGoal());
     }
 
     @Override
