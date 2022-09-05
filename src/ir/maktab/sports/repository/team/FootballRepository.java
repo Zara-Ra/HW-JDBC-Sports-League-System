@@ -43,10 +43,10 @@ public class FootballRepository implements TeamRepository {
     public Team teamInfo(int ID) throws SQLException {
         String sql = "SELECT * FROM football_team WHERE team_id = ?";
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
-        preparedStatement.setInt(1,ID);
+        preparedStatement.setInt(1, ID);
         ResultSet resultSet = preparedStatement.executeQuery();
-        if(resultSet.next()){
-            int id  = resultSet.getInt(1);
+        if (resultSet.next()) {
+            int id = resultSet.getInt(1);
             String name = resultSet.getString(2);
             int played = resultSet.getInt(3);
             int won = resultSet.getInt(4);
@@ -57,7 +57,7 @@ public class FootballRepository implements TeamRepository {
             int points = resultSet.getInt(9);
             int leagueID = resultSet.getInt(10);
 
-            Team team = new FootballTeam(name,played,won,lost,points,drawn,goalsFor,goalsAgainst);
+            Team team = new FootballTeam(name, played, won, lost, points, drawn, goalsFor, goalsAgainst);
             team.setTeamID(id);
             team.setLeagueID(leagueID);
             return team;
@@ -91,10 +91,10 @@ public class FootballRepository implements TeamRepository {
         String sql = "INSERT INTO football_league (team1,team2,team3,team4,team5,team6,team7,team8,startdate) VALUES (?,?,?,?,?,?,?,?,?)";
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
         List<Team> teamList = league.getTeamList();
-        for (int i = 0; i < 8 ; i++) {
-            preparedStatement.setString(i+1, teamList.get(i).getTeamName());
+        for (int i = 0; i < 8; i++) {
+            preparedStatement.setInt(i + 1, teamList.get(i).getTeamID());
         }
-        preparedStatement.setDate(9,league.getStartDate());
+        preparedStatement.setDate(9, league.getStartDate());
         preparedStatement.executeUpdate();
 
         String sqlForID = "SELECT league_id FROM football_league WHERE startdate = ?";
@@ -117,6 +117,42 @@ public class FootballRepository implements TeamRepository {
             return true;
         return false;
 
+    }
+
+    @Override
+    public boolean updateLeague(Team team) throws SQLException {
+        String sql = "SELECT * FROM football_league WHERE league_id = ?";
+        PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
+        preparedStatement.setInt(1, team.getLeagueID());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        int[] teamIDList = new int[8];
+        if (resultSet.next()) {
+            teamIDList[0] = resultSet.getInt(2);
+            teamIDList[1] = resultSet.getInt(3);
+            teamIDList[2] = resultSet.getInt(4);
+            teamIDList[3] = resultSet.getInt(5);
+            teamIDList[4] = resultSet.getInt(6);
+            teamIDList[5] = resultSet.getInt(7);
+            teamIDList[6] = resultSet.getInt(8);
+            teamIDList[7] = resultSet.getInt(9);
+        }
+        int emptyTeam = -1;
+        for (int i = 0; i < 8; i++) {
+            if(teamIDList[i] == 0) {
+                emptyTeam = i;
+                break;
+            }
+        }
+        if(emptyTeam == -1)
+            return false;
+        emptyTeam++;
+        String updatesql = "UPDATE football_league SET team"+emptyTeam+" = ? WHERE league_id = ?";
+        PreparedStatement preparedStatement1 = AppConstant.getConnection().prepareStatement(updatesql);
+        preparedStatement1.setInt(1, team.getTeamID());
+        preparedStatement1.setInt(2, team.getLeagueID());
+        if (preparedStatement1.executeUpdate() != 0)
+            return true;
+        return false;
     }
 
 }

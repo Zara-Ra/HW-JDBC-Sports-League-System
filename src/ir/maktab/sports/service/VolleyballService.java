@@ -12,7 +12,10 @@ public class VolleyballService implements LeagueService {
 
     @Override
     public int addTeam(Team team) throws SQLException {
-        return volleyballRepository.addTeam(team);
+        int teamID = volleyballRepository.addTeam(team);
+        team.setTeamID(teamID);
+        volleyballRepository.updateLeague(team);
+        return teamID;
     }
 
     @Override
@@ -49,5 +52,10 @@ public class VolleyballService implements LeagueService {
     @Override
     public void rankingTable() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Volleyball League";
     }
 }

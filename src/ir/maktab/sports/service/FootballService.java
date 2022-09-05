@@ -13,7 +13,10 @@ public class FootballService implements LeagueService {
 
     @Override
     public int addTeam(Team team) throws SQLException {
-        return footballRepository.addTeam(team);
+        int teamID = footballRepository.addTeam(team);
+        team.setTeamID(teamID);
+        footballRepository.updateLeague(team);
+        return teamID;
     }
 
     @Override
@@ -52,5 +55,10 @@ public class FootballService implements LeagueService {
     @Override
     public void rankingTable() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Football League";
     }
 }
