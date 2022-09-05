@@ -15,5 +15,7 @@ public interface TeamRepository {
 
     int addLeague(League league) throws SQLException;
 
+    boolean setTeamsLeagueID(Team team, int leagueID) throws SQLException;
+
     //void rankingTeams();
 }

@@ -11,10 +11,19 @@ public class League {
     private List<Team> teamList = new ArrayList<>();
     private List<Match> matchList = new ArrayList<>();
 
+    private int LeagueID;
     private Date startDate;
 
     public League(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public int getLeagueID() {
+        return LeagueID;
+    }
+
+    public void setLeagueID(int leagueID) {
+        LeagueID = leagueID;
     }
 
     public Date getStartDate() {

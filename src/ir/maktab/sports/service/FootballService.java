@@ -35,7 +35,18 @@ public class FootballService implements LeagueService {
 
     @Override
     public int addLeague(League league) throws SQLException {
-        return footballRepository.addLeague(league);
+        for (int i = 0; i < league.getTeamList().size(); i++) {
+            int teamID = footballRepository.addTeam(league.getTeamList().get(i));
+            league.getTeamList().get(i).setTeamID(teamID);
+        }
+
+        int leagueID = footballRepository.addLeague(league);
+        league.setLeagueID(leagueID);
+
+        for (int i = 0; i < league.getTeamList().size(); i++) {
+            footballRepository.setTeamsLeagueID(league.getTeamList().get(i) , leagueID);
+        }
+        return leagueID;
     }
 
     @Override

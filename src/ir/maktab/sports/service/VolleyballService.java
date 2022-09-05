@@ -32,7 +32,18 @@ public class VolleyballService implements LeagueService {
 
     @Override
     public int addLeague(League league) throws SQLException {
-        return volleyballRepository.addLeague(league);
+        for (int i = 0; i < league.getTeamList().size(); i++) {
+            int teamID = volleyballRepository.addTeam(league.getTeamList().get(i));
+            league.getTeamList().get(i).setTeamID(teamID);
+        }
+
+        int leagueID = volleyballRepository.addLeague(league);
+        league.setLeagueID(leagueID);
+
+        for (int i = 0; i < league.getTeamList().size(); i++) {
+            volleyballRepository.setTeamsLeagueID(league.getTeamList().get(i) , leagueID);
+        }
+        return leagueID;
     }
 
     @Override

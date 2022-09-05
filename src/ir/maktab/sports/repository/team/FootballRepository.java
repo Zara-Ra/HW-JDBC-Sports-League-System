@@ -92,7 +92,7 @@ public class FootballRepository implements TeamRepository {
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
         List<Team> teamList = league.getTeamList();
         for (int i = 0; i < 8 ; i++) {
-            preparedStatement.setInt(i+1, teamList.get(i).getTeamID());
+            preparedStatement.setString(i+1, teamList.get(i).getTeamName());
         }
         preparedStatement.setDate(9,league.getStartDate());
         preparedStatement.executeUpdate();
@@ -105,6 +105,18 @@ public class FootballRepository implements TeamRepository {
             return resultSet.getInt(1);
         }
         return 0;
+    }
+
+    @Override
+    public boolean setTeamsLeagueID(Team team, int leagueID) throws SQLException {
+        String sql = "UPDATE football_team SET league_id = ? WHERE team_id = ?";
+        PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
+        preparedStatement.setInt(1, leagueID);
+        preparedStatement.setInt(2, team.getTeamID());
+        if (preparedStatement.executeUpdate() != 0)
+            return true;
+        return false;
+
     }
 
 }
