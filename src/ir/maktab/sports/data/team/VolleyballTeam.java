@@ -1,29 +1,33 @@
 package ir.maktab.sports.data.team;
 
 public class VolleyballTeam extends Team{
-    private int [] sets = new int[2];// 0: number of won sets 1: number of lost sets
-
+    private int poans ;//  پوئن شماری
+    private int scoreSets; // TODO ست های برده و باخته که داخل متچ نگگهداری می شه
     public VolleyballTeam(String teamName) {
         super(teamName);
     }
 
-    @Override
-    public int calculatePoints() {
-        return 0;
+
+    public int getScoreSets() {
+        return scoreSets;
     }
 
-    public VolleyballTeam(String teamName, int numOfMatch, int numOfWin, int numOfLose, int points, int[] sets) {
+    public void setScoreSets(int scoreSets) {
+        this.scoreSets = scoreSets;
+    }
+
+    public VolleyballTeam(String teamName, int numOfMatch, int numOfWin, int numOfLose, int points, int poans,int scoreSets) {
         super(teamName, numOfMatch, numOfWin, numOfLose,points);
-        this.sets = sets;
+        this.poans = poans;
+        this.scoreSets = scoreSets;
     }
 
-    public int[] getSets() {
-        return sets;
+    public int getPoans() {
+        return poans;
     }
 
-    public void setSets(int[] sets) {
-        this.sets[0] += sets[0];
-        this.sets[1] += sets[1];
+    public void setPoans(int poans) {
+        this.poans += poans;
     }
 
     @Override
@@ -32,6 +36,8 @@ public class VolleyballTeam extends Team{
                 " Played : "+super.getPlayed()+
                 "\t Won : "+super.getWon()+
                 "\t Lost : "+super.getLost()+
-                "\t Sets "+ sets[0] + ":" + sets[1];
+                "\t Total Points : "+ super.getPoints()+
+                "\t Won Sets : "+ scoreSets+
+                "\t Poans : " + poans;
     }
 }

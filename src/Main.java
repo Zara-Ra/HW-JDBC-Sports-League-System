@@ -10,8 +10,6 @@ import ir.maktab.sports.service.VolleyballService;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -20,13 +18,7 @@ public class Main {
     private static LeagueService leagueService;
 
     public static void main(String[] args) throws SQLException {
-        //first we create a league service, we enter 8 or 5 teams in the league_table, we also enter these team names to the team_table
-        //we enter the matches(two nested fors) in the match_table.
-
-        //when ever a match is going to be added the feilds in match_table and the feilds in team_table is going to be updated.
-
-        //what happens when a team is going to be deleted? all the coresponding records should be deleted? dose sql handel it itself
-
+        //TODO tidy up the main create methods
         firstMenu();
     }
 
@@ -38,6 +30,7 @@ public class Main {
         System.out.println("Press 4 --> Exit");
 
         int menu = Integer.parseInt(scanner.nextLine());
+       //TODO be able to enter 0 to 5 or 0 to 8 teams to create a league
         switch (menu) {
             case 1:
                 leagueService = new FootballService();
@@ -148,27 +141,27 @@ public class Main {
                 Team awayTeam = null;
                 int homeScore, awayScore;
                 int homePoint = 0, awayPoint = 0;
-                System.out.println("Enter Home Team Information for the Match: ");
-                System.out.println("Name : ");
+                System.out.println("Enter Home Team Name: ");
                 homeTeam = league.findTeam(scanner.nextLine());
                 if (homeTeam == null) {
                     System.out.println("Team not in current League");
                     secondMenu();
                     break;
                 }
-                System.out.println("Score : ");
-                homeScore = Integer.parseInt(scanner.nextLine());
-
-                System.out.println("Enter Away Team Information for the Match: ");
-                System.out.println("Name : ");
+                System.out.println("Enter Away Team Name: ");
                 awayTeam = league.findTeam(scanner.nextLine());
                 if (awayTeam == null) {
                     System.out.println("Team not in current League");
                     secondMenu();
                     break;
                 }
-                System.out.println("Score : ");
-                awayScore = Integer.parseInt(scanner.nextLine());
+                System.out.println("Enter the Score of the match(EXP. 3:1) : ");
+
+                String temp = scanner.nextLine();
+                String [] splited = temp.split(":");
+                homeScore = Integer.parseInt(splited[0]);
+                awayScore = Integer.parseInt(splited[1]);
+
                 if (leagueService instanceof FootballService) {
                     if (homeScore > awayScore) {
                         homePoint = 3;
@@ -180,7 +173,8 @@ public class Main {
                         homePoint = 0;
                         awayPoint = 3;
                     }
-                } else if (leagueService instanceof VolleyballService) {
+                }
+                else if (leagueService instanceof VolleyballService) {
                     if (homeScore == 3 && (awayScore == 0 || awayScore == 1)) {
                         homePoint = 3;
                         awayPoint = 0;
@@ -198,23 +192,16 @@ public class Main {
                 Match match = new Match(homeTeam.getTeamID(), awayTeam.getTeamID(), homePoint, awayPoint, league.getLeagueID(), homeScore, awayScore);
                 match.setLeagueID(league.getLeagueID());
                 if(leagueService instanceof VolleyballService){
-                    System.out.println("Enter Total number of Won sets and Lost sets for home team:(EXP. 52:13) ");
-                    String temp = scanner.nextLine();
-                    String [] splited = temp.split(":");
-                    int [] sets = new int[2];
-                    sets[0] = Integer.parseInt(splited[0]);
-                    sets[1] = Integer.parseInt(splited[1]);
-                    ((VolleyballTeam) homeTeam).setSets(sets);
-
-                    System.out.println("Enter Total number of Won sets and Lost sets for away team:(EXP. 52:13) ");
+                    System.out.println("Enter Total number of Won and Lost Poans :(EXP. 52:13) ");
                     String temp1 = scanner.nextLine();
-                    String [] splited1 = temp.split(":");
-                    int [] sets1 = new int[2];
-                    sets1[0] = Integer.parseInt(splited1[0]);
-                    sets1[1] = Integer.parseInt(splited1[1]);
-                    ((VolleyballTeam) awayTeam).setSets(sets);
+                    String [] splited1 = temp1.split(":");
+                    int [] sets = new int[2];
+                    sets[0] = Integer.parseInt(splited1[0]);
+                    sets[1] = Integer.parseInt(splited1[1]);
+                    ((VolleyballTeam) homeTeam).setPoans(sets[0]);
+                    ((VolleyballTeam) awayTeam).setPoans(sets[1]);
 
-                }
+                    }
                 leagueService.addMatch(league, match);
                 secondMenu();
                 break;

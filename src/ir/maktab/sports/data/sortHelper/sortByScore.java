@@ -5,15 +5,9 @@ import ir.maktab.sports.data.team.VolleyballTeam;
 
 import java.util.Comparator;
 
-public class sortByWonSets implements Comparator<Team> {
+public class sortByScore implements Comparator<Team> {
     @Override
     public int compare(Team team1, Team team2) {
-        int [] sets1 = ((VolleyballTeam) team1).getSets();
-        int [] sets2 = ((VolleyballTeam) team2).getSets();
-
-        return sets2[0] - sets1[0];
-
-
-
+        return ((VolleyballTeam) team2).getScoreSets()- ((VolleyballTeam) team1).getScoreSets();
     }
 }

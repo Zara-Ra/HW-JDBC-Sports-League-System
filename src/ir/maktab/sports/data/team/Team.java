@@ -47,8 +47,6 @@ public abstract class Team {
         this.points = points;
     }
 
-    public abstract int calculatePoints();
-
     public int getTeamID() {
         return teamID;
     }

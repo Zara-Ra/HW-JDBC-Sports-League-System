@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class League {
+    //TODO have a constructor with different number of teams
+    //TODO delete matchList from League, just like its table
     private List<Team> teamList = new ArrayList<>();
     private List<Match> matchList = new ArrayList<>();
 

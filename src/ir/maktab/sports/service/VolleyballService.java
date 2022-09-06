@@ -3,7 +3,8 @@ package ir.maktab.sports.service;
 import ir.maktab.sports.data.League;
 import ir.maktab.sports.data.Match;
 import ir.maktab.sports.data.sortHelper.sortByPoints;
-import ir.maktab.sports.data.sortHelper.sortByWonSets;
+import ir.maktab.sports.data.sortHelper.sortByPoan;
+import ir.maktab.sports.data.sortHelper.sortByScore;
 import ir.maktab.sports.data.team.Team;
 import ir.maktab.sports.data.team.VolleyballTeam;
 import ir.maktab.sports.repository.team.VolleyballRepository;
@@ -60,6 +61,9 @@ public class VolleyballService implements LeagueService {
         homeT.setPoints(homeT.getPoints() + match.getHomeTeamPoints());
         awayT.setPoints(awayT.getPoints() + match.getAwayTeamPoints());
 
+        homeT.setScoreSets(homeT.getScoreSets()+match.getHomeTeamScore()) ;
+        awayT.setScoreSets(awayT.getScoreSets()+match.getAwayTeamScore()) ;
+
         if (match.getHomeTeamScore() > match.getAwayTeamScore()) {
             homeT.setWon(homeT.getWon() + 1);
             awayT.setLost(awayT.getLost() + 1);
@@ -106,7 +110,8 @@ public class VolleyballService implements LeagueService {
     @Override
     public void rankingTable(List<Team> teamList) {
         Collections.sort(teamList, new sortByPoints());
-        Collections.sort(teamList, new sortByWonSets());
+        Collections.sort(teamList, new sortByScore());
+        Collections.sort(teamList, new sortByPoan());
     }
 
     @Override

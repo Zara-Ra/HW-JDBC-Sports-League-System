@@ -2,7 +2,6 @@ package ir.maktab.sports.repository.team;
 
 import ir.maktab.sports.data.League;
 import ir.maktab.sports.data.Match;
-import ir.maktab.sports.data.team.FootballTeam;
 import ir.maktab.sports.data.team.Team;
 import ir.maktab.sports.data.team.VolleyballTeam;
 import ir.maktab.sports.repository.util.AppConstant;
@@ -51,14 +50,12 @@ public class VolleyballRepository implements TeamRepository {
             int played = resultSet.getInt(3);
             int won = resultSet.getInt(4);
             int lost = resultSet.getInt(5);
-            int sets[] = new int[2];
-            sets[0] = resultSet.getInt(6);
-            sets[1] = resultSet.getInt(7);
-            int points = resultSet.getInt(8);
-            int leagueID = resultSet.getInt(9);
+            int scoreSet = resultSet.getInt(6);
+            int points = resultSet.getInt(7);
+            int leagueID = resultSet.getInt(8);
+            int poan = resultSet.getInt(9);
 
-
-            Team team = new VolleyballTeam(name, played, won, lost, points, sets);
+            Team team = new VolleyballTeam(name, played, won, lost, points,poan,scoreSet);
             team.setTeamID(id);
             team.setLeagueID(leagueID);
             return team;
@@ -68,14 +65,14 @@ public class VolleyballRepository implements TeamRepository {
 
     @Override
     public boolean updateTeam(Team team) throws SQLException {
-        String sql = "UPDATE volleyball_team SET played=?,won=?,lost=?,won_set=?,lost_set=?,points=? WHERE team_id = ?";
+        String sql = "UPDATE volleyball_team SET played=?,won=?,lost=?,score_set=?,points=?,poan=? WHERE team_id = ?";
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1,team.getPlayed());
         preparedStatement.setInt(2,team.getWon());
         preparedStatement.setInt(3,team.getLost());
-        preparedStatement.setInt(4,((VolleyballTeam) team).getSets()[0]);
-        preparedStatement.setInt(5,((VolleyballTeam) team).getSets()[1]);
-        preparedStatement.setInt(6,team.getPoints());
+        preparedStatement.setInt(4,((VolleyballTeam) team).getScoreSets());
+        preparedStatement.setInt(5,team.getPoints());
+        preparedStatement.setInt(6,((VolleyballTeam) team).getPoans());
         preparedStatement.setInt(7,team.getTeamID());
         if(preparedStatement.executeUpdate() != 0)
             return true;
