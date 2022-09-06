@@ -29,13 +29,13 @@ public class FootballService implements LeagueService {
             int matchID = footballRepository.addMatch(match);
             match.setMatchID(matchID);
             match.setLeagueID(league.getLeagueID());
-            league.addMatch(match);
+            //league.addMatch(match);
         }
         for (int i = 0; i < initialSize; i++) {
             Match match = new Match(league.getLeagueID(), league.getTeamList().get(i).getTeamID(), team.getTeamID());
             int matchID = footballRepository.addMatch(match);
             match.setMatchID(matchID);
-            league.addMatch(match);
+            //league.addMatch(match);
         }
         return teamID;
     }
@@ -103,7 +103,7 @@ public class FootballService implements LeagueService {
                     Match match = new Match(leagueID, hometeam.getTeamID(), awayteam.getTeamID());
                     int matchID = footballRepository.addMatch(match);
                     match.setMatchID(matchID);
-                    league.addMatch(match);
+                    //league.addMatch(match);
                 }
             }
         }
@@ -112,8 +112,8 @@ public class FootballService implements LeagueService {
 
     @Override
     public void rankingTable(List<Team> teamList) {
-        Collections.sort(teamList, new sortByPoints());
         Collections.sort(teamList, new sortByDiffGoal());
+        Collections.sort(teamList, new sortByPoints());
     }
 
     @Override

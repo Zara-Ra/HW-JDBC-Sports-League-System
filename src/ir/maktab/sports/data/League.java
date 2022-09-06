@@ -12,7 +12,7 @@ public class League {
     //TODO have a constructor with different number of teams
     //TODO delete matchList from League, just like its table
     private List<Team> teamList = new ArrayList<>();
-    private List<Match> matchList = new ArrayList<>();
+    //private List<Match> matchList = new ArrayList<>();
 
     private int LeagueID;
     private Date startDate;
@@ -67,7 +67,7 @@ public class League {
         }
         return null;
     }
-    public List<Match> getMatchList() {
+    /*public List<Match> getMatchList() {
         return matchList;
     }
 
@@ -77,7 +77,7 @@ public class League {
 
     public void addMatch(Match match) throws SQLException {
         matchList.add(match);
-    }
+    }*/
 
     @Override
     public String toString() {
