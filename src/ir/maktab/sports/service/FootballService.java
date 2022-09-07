@@ -2,8 +2,8 @@ package ir.maktab.sports.service;
 
 import ir.maktab.sports.data.League;
 import ir.maktab.sports.data.Match;
-import ir.maktab.sports.data.sortHelper.sortByDiffGoal;
-import ir.maktab.sports.data.sortHelper.sortByPoints;
+import ir.maktab.sports.util.sortHelper.sortByDiffGoal;
+import ir.maktab.sports.util.sortHelper.sortByPoints;
 import ir.maktab.sports.data.team.FootballTeam;
 import ir.maktab.sports.data.team.Team;
 import ir.maktab.sports.repository.team.FootballRepository;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class FootballService implements LeagueService {
 
-    private FootballRepository footballRepository = new FootballRepository();
+    final private FootballRepository footballRepository = new FootballRepository();
 
     @Override
     public int addTeam(League league, Team team) throws SQLException {
@@ -29,13 +29,11 @@ public class FootballService implements LeagueService {
             int matchID = footballRepository.addMatch(match);
             match.setMatchID(matchID);
             match.setLeagueID(league.getLeagueID());
-            //league.addMatch(match);
         }
         for (int i = 0; i < initialSize; i++) {
             Match match = new Match(league.getLeagueID(), league.getTeamList().get(i).getTeamID(), team.getTeamID());
             int matchID = footballRepository.addMatch(match);
             match.setMatchID(matchID);
-            //league.addMatch(match);
         }
         return teamID;
     }
@@ -78,7 +76,7 @@ public class FootballService implements LeagueService {
         }
         footballRepository.updateTeam(homeT);
         footballRepository.updateTeam(awayT);
-        return footballRepository.updatMatch(match);
+        return footballRepository.updateMatch(match);
     }
 
     @Override
@@ -94,6 +92,7 @@ public class FootballService implements LeagueService {
 
         for (int i = 0; i < initialListsize; i++) {
             footballRepository.setTeamsLeagueID(league.getTeamList().get(i), leagueID);
+            league.getTeamList().get(i).setLeagueID(leagueID);
         }
         for (int i = 0; i < initialListsize; i++) {
             for (int j = 0; j < initialListsize; j++) {
@@ -103,7 +102,6 @@ public class FootballService implements LeagueService {
                     Match match = new Match(leagueID, hometeam.getTeamID(), awayteam.getTeamID());
                     int matchID = footballRepository.addMatch(match);
                     match.setMatchID(matchID);
-                    //league.addMatch(match);
                 }
             }
         }
@@ -114,6 +112,11 @@ public class FootballService implements LeagueService {
     public void rankingTable(List<Team> teamList) {
         Collections.sort(teamList, new sortByDiffGoal());
         Collections.sort(teamList, new sortByPoints());
+    }
+
+    @Override
+    public String[] showPreviousLeagues() throws SQLException {
+        return footballRepository.showAllLeague();
     }
 
     @Override

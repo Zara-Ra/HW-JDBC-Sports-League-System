@@ -14,11 +14,13 @@ public interface TeamRepository {
     boolean updateTeam(Team team) throws SQLException;
     int addMatch(Match match) throws SQLException;
 
-    boolean updatMatch(Match match) throws SQLException;
+    boolean updateMatch(Match match) throws SQLException;
     int addLeague(League league) throws SQLException;
 
     boolean setTeamsLeagueID(Team team, int leagueID) throws SQLException;
 
     boolean updateLeague(Team team) throws SQLException;
-    //void rankingTeams();
+
+    String [] showAllLeague() throws SQLException;
+
 }

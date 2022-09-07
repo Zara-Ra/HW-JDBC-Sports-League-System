@@ -4,7 +4,7 @@ import ir.maktab.sports.data.League;
 import ir.maktab.sports.data.Match;
 import ir.maktab.sports.data.team.FootballTeam;
 import ir.maktab.sports.data.team.Team;
-import ir.maktab.sports.repository.util.AppConstant;
+import ir.maktab.sports.util.AppConstant;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,13 +30,13 @@ public class FootballRepository implements TeamRepository {
 
     @Override
     public boolean removeTeam(Team team) throws SQLException {
-        String sql = "DELETE FROM football_team WHERE team_id = ?";
+        String sql = "DELETE FROM football_team WHERE team_id = ? AND league_id = ?";
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, team.getTeamID());
+        preparedStatement.setInt(2,team.getLeagueID());
         if (preparedStatement.executeUpdate() != 0)
             return true;
         return false;
-
     }
 
     @Override
@@ -105,8 +105,8 @@ public class FootballRepository implements TeamRepository {
     }
 
     @Override
-    public boolean updatMatch(Match match) throws SQLException {
-        String sql = "UPDATE football_match SET home_team_points = ?,away_team_points = ?,home_team_score=?,away_team_score=? WHERE home_team_id = ? AND away_team_id = ?";
+    public boolean updateMatch(Match match) throws SQLException {
+        String sql = "UPDATE football_match SET home_team_points = ?,away_team_points = ?,home_team_score=?,away_team_score=? WHERE home_team_id = ? AND away_team_id = ? AND league_id = ?";
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1,match.getHomeTeamPoints() );
         preparedStatement.setInt(2, match.getAwayTeamPoints());
@@ -114,6 +114,7 @@ public class FootballRepository implements TeamRepository {
         preparedStatement.setInt(4, match.getAwayTeamScore());
         preparedStatement.setInt(5, match.getHomeTeamID());
         preparedStatement.setInt(6, match.getAwayTeamID());
+        preparedStatement.setInt(7, match.getLeagueID());
         if (preparedStatement.executeUpdate() != 0)
             return true;
         return false;
@@ -121,13 +122,14 @@ public class FootballRepository implements TeamRepository {
 
     @Override
     public int addLeague(League league) throws SQLException {
-        String sql = "INSERT INTO football_league (team1,team2,team3,team4,team5,team6,team7,team8,startdate) VALUES (?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO football_league (league_name,team1,team2,team3,team4,team5,team6,team7,team8,startdate) VALUES (?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
         List<Team> teamList = league.getTeamList();
+        preparedStatement.setString(1,league.getLeagueName());
         for (int i = 0; i < 8; i++) {
-            preparedStatement.setInt(i + 1, teamList.get(i).getTeamID());
+            preparedStatement.setInt(i + 2, teamList.get(i).getTeamID());
         }
-        preparedStatement.setDate(9, league.getStartDate());
+        preparedStatement.setDate(10, league.getStartDate());
         preparedStatement.executeUpdate();
 
         String sqlForID = "SELECT league_id FROM football_league WHERE startdate = ?";
@@ -185,6 +187,27 @@ public class FootballRepository implements TeamRepository {
         if (preparedStatement1.executeUpdate() != 0)
             return true;
         return false;
+    }
+
+    @Override
+    public String[] showAllLeague() throws SQLException {
+        String sql = "SELECT count(league_name) FROM football_league";
+        PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        int numOfLeague = 0;
+        if (resultSet.next()){
+            numOfLeague = resultSet.getInt(1);
+        }
+        String query = "SELECT league_name FROM football_league";
+        PreparedStatement preparedStatement1 = AppConstant.getConnection().prepareStatement(query);
+        ResultSet resultSet1 = preparedStatement1.executeQuery();
+        String [] leagueNames = new String[numOfLeague];
+        int i = 0;
+        while (resultSet1.next()){
+            leagueNames[i] = resultSet1.getString(1);
+            i++;
+        }
+        return leagueNames;
     }
 
 }

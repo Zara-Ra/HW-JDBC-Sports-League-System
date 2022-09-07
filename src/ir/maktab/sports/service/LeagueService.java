@@ -15,4 +15,5 @@ public interface LeagueService {
     boolean addMatch(League league,Match match) throws SQLException;
     int addLeague(League league) throws SQLException;
     void rankingTable(List<Team> teamList);
+    String [] showPreviousLeagues() throws SQLException;
 }

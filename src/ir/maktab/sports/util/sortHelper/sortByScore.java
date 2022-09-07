@@ -1,4 +1,4 @@
-package ir.maktab.sports.data.sortHelper;
+package ir.maktab.sports.util.sortHelper;
 
 import ir.maktab.sports.data.team.Team;
 import ir.maktab.sports.data.team.VolleyballTeam;

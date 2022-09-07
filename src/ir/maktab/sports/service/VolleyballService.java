@@ -2,9 +2,9 @@ package ir.maktab.sports.service;
 
 import ir.maktab.sports.data.League;
 import ir.maktab.sports.data.Match;
-import ir.maktab.sports.data.sortHelper.sortByPoints;
-import ir.maktab.sports.data.sortHelper.sortByPoan;
-import ir.maktab.sports.data.sortHelper.sortByScore;
+import ir.maktab.sports.util.sortHelper.sortByPoints;
+import ir.maktab.sports.util.sortHelper.sortByPoan;
+import ir.maktab.sports.util.sortHelper.sortByScore;
 import ir.maktab.sports.data.team.Team;
 import ir.maktab.sports.data.team.VolleyballTeam;
 import ir.maktab.sports.repository.team.VolleyballRepository;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class VolleyballService implements LeagueService {
-    private VolleyballRepository volleyballRepository = new VolleyballRepository();
+    final private VolleyballRepository volleyballRepository = new VolleyballRepository();
 
     @Override
     public int addTeam(League league, Team team) throws SQLException {
@@ -29,13 +29,11 @@ public class VolleyballService implements LeagueService {
             int matchID = volleyballRepository.addMatch(match);
             match.setMatchID(matchID);
             match.setLeagueID(league.getLeagueID());
-            //league.addMatch(match);
         }
         for (int i = 0; i < initialSize; i++) {
             Match match = new Match(league.getLeagueID(), league.getTeamList().get(i).getTeamID(), team.getTeamID());
             int matchID = volleyballRepository.addMatch(match);
             match.setMatchID(matchID);
-            //league.addMatch(match);
         }
         return teamID;
     }
@@ -61,21 +59,20 @@ public class VolleyballService implements LeagueService {
         homeT.setPoints(homeT.getPoints() + match.getHomeTeamPoints());
         awayT.setPoints(awayT.getPoints() + match.getAwayTeamPoints());
 
-        homeT.setScoreSets(homeT.getScoreSets()+match.getHomeTeamScore()) ;
-        awayT.setScoreSets(awayT.getScoreSets()+match.getAwayTeamScore()) ;
+        homeT.setScoreSets(homeT.getScoreSets() + match.getHomeTeamScore());
+        awayT.setScoreSets(awayT.getScoreSets() + match.getAwayTeamScore());
 
         if (match.getHomeTeamScore() > match.getAwayTeamScore()) {
             homeT.setWon(homeT.getWon() + 1);
             awayT.setLost(awayT.getLost() + 1);
-        }
-        else {
+        } else {
             awayT.setWon(awayT.getWon() + 1);
             homeT.setLost(homeT.getLost() + 1);
         }
         volleyballRepository.updateTeam(homeT);
         volleyballRepository.updateTeam(awayT);
 
-        return volleyballRepository.updatMatch(match);
+        return volleyballRepository.updateMatch(match);
     }
 
     @Override
@@ -91,6 +88,7 @@ public class VolleyballService implements LeagueService {
 
         for (int i = 0; i < initialListsize; i++) {
             volleyballRepository.setTeamsLeagueID(league.getTeamList().get(i), leagueID);
+            league.getTeamList().get(i).setLeagueID(leagueID);
         }
         for (int i = 0; i < initialListsize; i++) {
             for (int j = 0; j < initialListsize; j++) {
@@ -100,7 +98,6 @@ public class VolleyballService implements LeagueService {
                     Match match = new Match(leagueID, hometeam.getTeamID(), awayteam.getTeamID());
                     int matchID = volleyballRepository.addMatch(match);
                     match.setMatchID(matchID);
-                    //league.addMatch(match);
                 }
             }
         }
@@ -112,6 +109,11 @@ public class VolleyballService implements LeagueService {
         Collections.sort(teamList, new sortByPoan());
         Collections.sort(teamList, new sortByScore());
         Collections.sort(teamList, new sortByPoints());
+    }
+
+    @Override
+    public String[] showPreviousLeagues() throws SQLException {
+        return volleyballRepository.showAllLeague();
     }
 
     @Override

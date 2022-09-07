@@ -10,15 +10,23 @@ import java.util.List;
 
 public class League {
     //TODO have a constructor with different number of teams
-    //TODO delete matchList from League, just like its table
     private List<Team> teamList = new ArrayList<>();
-    //private List<Match> matchList = new ArrayList<>();
 
     private int LeagueID;
+    private String leagueName;
     private Date startDate;
 
-    public League(Date startDate) {
+    public League(Date startDate,String leagueName) {
         this.startDate = startDate;
+        this.leagueName = leagueName;
+    }
+
+    public String getLeagueName() {
+        return leagueName;
+    }
+
+    public void setLeagueName(String leagueName) {
+        this.leagueName = leagueName;
     }
 
     public int getLeagueID() {
@@ -67,26 +75,14 @@ public class League {
         }
         return null;
     }
-    /*public List<Match> getMatchList() {
-        return matchList;
-    }
-
-    public void setMatchList(List<Match> matchList) {
-        this.matchList = matchList;
-    }
-
-    public void addMatch(Match match) throws SQLException {
-        matchList.add(match);
-    }*/
-
     @Override
     public String toString() {
         String teamNames = "";
         for (int i = 0; i < teamList.size(); i++) {
             teamNames = teamNames.concat(teamList.get(i).getTeamName());
-            teamNames = teamNames.concat("\t");
+            teamNames = teamNames.concat(" ");
         }
-        return "League ID " + LeagueID +
+        return "League Name " + leagueName +
                 " Start Date " + startDate+
                 "\n Team Names : " + teamNames;
     }

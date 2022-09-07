@@ -1,4 +1,4 @@
-package ir.maktab.sports.repository.util;
+package ir.maktab.sports.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
