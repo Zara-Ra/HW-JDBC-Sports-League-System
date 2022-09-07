@@ -73,6 +73,12 @@ public class Main {
                 break;
             case EXIT:
                 break;
+            default:
+                System.out.println("---------------------------------------");
+                System.out.println("Press a valid number...");
+                System.out.println("---------------------------------------");
+                firstMenu();
+                break;
         }
     }
 
@@ -150,6 +156,12 @@ public class Main {
                 secondMenu();
                 break;
             case EXIT:
+                break;
+            default:
+                System.out.println("---------------------------------------");
+                System.out.println("Press a valid number...");
+                System.out.println("---------------------------------------");
+                secondMenu();
                 break;
         }
     }
