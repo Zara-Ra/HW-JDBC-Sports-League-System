@@ -9,11 +9,17 @@ import java.util.List;
 
 public interface LeagueService {
 
-    int addTeam(League league,Team team) throws SQLException;
+    int addTeam(League league, Team team) throws SQLException;
+
     boolean deleteTeam(Team team) throws SQLException;
-    Team TeamInfoByID(int ID) throws SQLException;
-    boolean addMatch(League league,Match match) throws SQLException;
+
+    Team teamInfo(int ID) throws SQLException;
+
+    boolean addMatch(League league, Match match) throws SQLException;
+
     int addLeague(League league) throws SQLException;
+
     void rankingTable(List<Team> teamList);
-    String [] showPreviousLeagues() throws SQLException;
+
+    String[] previousLeagues() throws SQLException;
 }

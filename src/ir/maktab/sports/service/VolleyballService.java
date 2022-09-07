@@ -44,8 +44,8 @@ public class VolleyballService implements LeagueService {
     }
 
     @Override
-    public Team TeamInfoByID(int ID) throws SQLException {
-        return volleyballRepository.teamInfo(ID);
+    public Team teamInfo(int ID) throws SQLException {
+        return volleyballRepository.teamInfoByID(ID);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class VolleyballService implements LeagueService {
     }
 
     @Override
-    public String[] showPreviousLeagues() throws SQLException {
+    public String[] previousLeagues() throws SQLException {
         return volleyballRepository.showAllLeague();
     }
 

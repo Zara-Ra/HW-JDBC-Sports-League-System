@@ -40,7 +40,7 @@ public class VolleyballRepository implements TeamRepository {
     }
 
     @Override
-    public Team teamInfo(int ID) throws SQLException {
+    public Team teamInfoByID(int ID) throws SQLException {
         String sql = "SELECT * FROM volleyball_team WHERE team_id = ?";
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, ID);

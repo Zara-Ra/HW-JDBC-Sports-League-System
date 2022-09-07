@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class League {
     //TODO have a constructor with different number of teams
@@ -75,6 +76,20 @@ public class League {
         }
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof League)) return false;
+        League league = (League) o;
+        return getLeagueID() == league.getLeagueID() && getStartDate().equals(league.getStartDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLeagueID(), getStartDate());
+    }
+
     @Override
     public String toString() {
         String teamNames = "";

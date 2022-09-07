@@ -44,8 +44,8 @@ public class FootballService implements LeagueService {
     }
 
     @Override
-    public Team TeamInfoByID(int ID) throws SQLException {
-        return footballRepository.teamInfo(ID);
+    public Team teamInfo(int ID) throws SQLException {
+        return footballRepository.teamInfoByID(ID);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class FootballService implements LeagueService {
     }
 
     @Override
-    public String[] showPreviousLeagues() throws SQLException {
+    public String[] previousLeagues() throws SQLException {
         return footballRepository.showAllLeague();
     }
 

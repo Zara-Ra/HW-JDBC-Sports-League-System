@@ -1,5 +1,7 @@
 package ir.maktab.sports.data;
 
+import java.util.Objects;
+
 public class Match {
     private int matchID;
     private int leagueID;
@@ -18,6 +20,19 @@ public class Match {
         this.leagueID = leagueID;
         this.homeTeamScore = homeTeamScore;
         this.awayTeamScore = awayTeamScore;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Match)) return false;
+        Match match = (Match) o;
+        return getMatchID() == match.getMatchID() && getLeagueID() == match.getLeagueID();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMatchID(), getLeagueID());
     }
 
     public Match(int leagueID, int homeTeamID, int awayTeamID) {

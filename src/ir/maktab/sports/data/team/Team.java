@@ -1,5 +1,7 @@
 package ir.maktab.sports.data.team;
 
+import java.util.Objects;
+
 public abstract class Team {
     private int teamID;
     private int leagueID;
@@ -41,6 +43,19 @@ public abstract class Team {
 
     public int getPoints() {
         return points;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Team)) return false;
+        Team team = (Team) o;
+        return getTeamID() == team.getTeamID() && getLeagueID() == team.getLeagueID() && getTeamName().equals(team.getTeamName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTeamID(), getLeagueID());
     }
 
     public void setPoints(int points) {
