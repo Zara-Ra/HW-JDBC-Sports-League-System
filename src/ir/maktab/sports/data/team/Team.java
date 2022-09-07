@@ -74,10 +74,6 @@ public abstract class Team {
         return teamName;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
     public int getPlayed() {
         return Played;
     }

@@ -2,9 +2,7 @@ package ir.maktab.sports.data;
 
 import ir.maktab.sports.data.team.Team;
 
-import javax.swing.*;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -63,16 +61,16 @@ public class League {
     }
 
     public Team findTeam(int id){
-        for (int i = 0; i < teamList.size(); i++) {
-            if(teamList.get(i).getTeamID() == id)
-                return teamList.get(i);
+        for (Team team : teamList) {
+            if (team.getTeamID() == id)
+                return team;
         }
         return null;
     }
     public Team findTeam(String name){
-        for (int i = 0; i < teamList.size(); i++) {
-            if(name.equals(teamList.get(i).getTeamName()))
-                return teamList.get(i);
+        for (Team team : teamList) {
+            if (name.equals(team.getTeamName()))
+                return team;
         }
         return null;
     }
@@ -93,8 +91,8 @@ public class League {
     @Override
     public String toString() {
         String teamNames = "";
-        for (int i = 0; i < teamList.size(); i++) {
-            teamNames = teamNames.concat(teamList.get(i).getTeamName());
+        for (Team team : teamList) {
+            teamNames = teamNames.concat(team.getTeamName());
             teamNames = teamNames.concat(" ");
         }
         return "League Name " + leagueName +

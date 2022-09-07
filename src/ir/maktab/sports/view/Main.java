@@ -1,25 +1,33 @@
-import ir.maktab.sports.data.Match;
+package ir.maktab.sports.view;
+
 import ir.maktab.sports.data.League;
+import ir.maktab.sports.data.Match;
 import ir.maktab.sports.data.team.FootballTeam;
 import ir.maktab.sports.data.team.Team;
 import ir.maktab.sports.data.team.VolleyballTeam;
-import ir.maktab.sports.util.AppConstant;
 import ir.maktab.sports.service.FootballService;
 import ir.maktab.sports.service.LeagueService;
 import ir.maktab.sports.service.VolleyballService;
+import ir.maktab.sports.util.AppConstant;
+import ir.maktab.sports.util.validation.ValidLeagueandTeamName;
+import ir.maktab.sports.util.validation.ValidVolleyballScore;
 
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 public class Main {
     enum FirstMenuOption {
-        FOOTBALLLEAGUE,VOLLEYBALLLEAGUE,PREVIOUSLEAGUE, EXIT;
+        FOOTBALLLEAGUE, VOLLEYBALLLEAGUE, PREVIOUSLEAGUE, EXIT
     }
-    enum SecondMenuOption{
-      LEAGUEINFO,DELETETEAM,ADDTEAM,ADDMATCH,TEAMINFO,RANKING,EXIT;
+
+    enum SecondMenuOption {
+        LEAGUEINFO, DELETETEAM, ADDTEAM, ADDMATCH, TEAMINFO, RANKING, PREVMENU, EXIT
     }
-    private static Scanner scanner = AppConstant.getScanner();
+
+    private static final Scanner scanner = AppConstant.getScanner();
     private static League league;
     private static LeagueService leagueService;
 
@@ -44,10 +52,12 @@ public class Main {
             case FOOTBALLLEAGUE:
                 leagueService = new FootballService();
                 createNewLeague(8);
+                firstMenu();
                 break;
             case VOLLEYBALLLEAGUE:
                 leagueService = new VolleyballService();
                 createNewLeague(5);
+                firstMenu();
                 break;
             case PREVIOUSLEAGUE:
                 System.out.println("---------------------------------------");
@@ -64,11 +74,10 @@ public class Main {
                     firstMenu();
                     break;
                 }
-                if(showPreviousLeagues()) {
-                    //System.out.println("Enter a League Name to Edit and see more Info: ");
+                if (showPreviousLeagues()) {
+                    //TODO System.out.println("Enter a League Name to Edit and see more Info: ");
                     secondMenu();
-                }
-                else
+                } else
                     firstMenu();
                 break;
             case EXIT:
@@ -92,84 +101,75 @@ public class Main {
         System.out.println("Press 4 --> Add Match");
         System.out.println("Press 5 --> Show Team Info");
         System.out.println("Press 6 --> Show Ranking Table");
-        System.out.println("Press 7 --> Exit");
+        System.out.println("Press 7 __> Previous Menu");
+        System.out.println("Press 8 --> Exit");
         System.out.println("---------------------------------------");
 
         int value = Integer.parseInt(scanner.nextLine()) - 1;
         SecondMenuOption menu = SecondMenuOption.values()[value];
         switch (menu) {
-            case LEAGUEINFO:
+            case LEAGUEINFO -> {
                 System.out.println("---------------------------------------");
                 System.out.println(league);
                 System.out.println("---------------------------------------");
                 secondMenu();
-                break;
-            case DELETETEAM:
+            }
+            case DELETETEAM -> {
                 deletTeam();
                 secondMenu();
-                break;
-            case ADDTEAM:
-                Team newTeam;
-                if (leagueService instanceof FootballService) {
-                    newTeam = addTeam(8);
-                } else if (leagueService instanceof VolleyballService) {
-                    newTeam = addTeam(5);
-                } else {
-                    System.out.println("No suitable service chosen");
-                    firstMenu();
-                    break;
-                }
-                if (newTeam != null) {
-                    newTeam.setLeagueID(league.getLeagueID());
-                    int teamID = leagueService.addTeam(league, newTeam);
-                    newTeam.setTeamID(teamID);
-                    league.addTeam(newTeam);
-                    System.out.println("Team added Successfully!");
-                    System.out.println("---------------------------------------");
-                }
+            }
+            case ADDTEAM -> {
+                createTeam();
                 secondMenu();
-                break;
-            case ADDMATCH:
+            }
+            case ADDMATCH -> {
                 addMatch();
                 secondMenu();
-                break;
-            case TEAMINFO:
-                System.out.println("---------------------------------------");
-                System.out.println("Enter Team Name to See Info: ");
-                System.out.println("---------------------------------------");
-                Team team = league.findTeam(scanner.nextLine());
-                if(team != null) {
-                    team = leagueService.teamInfo(team.getTeamID());
-                    System.out.println(team);
-                }
-                else
-                    System.out.println("Team not Found");
+            }
+            case TEAMINFO -> {
+                teamInfo();
                 secondMenu();
-                break;
-            case RANKING:
-                leagueService.rankingTable(league.getTeamList());
+            }
+            case RANKING -> {
+                rankingTable();
+                secondMenu();
+            }
+            case PREVMENU -> firstMenu();
+            case EXIT -> exit(0);
+            default -> {
                 System.out.println("---------------------------------------");
-                for (int i = 0; i < league.getTeamList().size(); i++) {
-                    System.out.println(league.getTeamList().get(i));
-                }
+                System.out.println("Press a Valid Number...");
                 System.out.println("---------------------------------------");
                 secondMenu();
-                break;
-            case EXIT:
-                break;
-            default:
-                System.out.println("---------------------------------------");
-                System.out.println("Press a valid number...");
-                System.out.println("---------------------------------------");
-                secondMenu();
-                break;
+            }
         }
     }
 
+    private static void teamInfo() throws SQLException {
+        System.out.println("---------------------------------------");
+        System.out.println("Enter Team Name to See Info: ");
+        System.out.println("---------------------------------------");
+        Team team = league.findTeam(scanner.nextLine());
+        if (team != null) {
+            team = leagueService.teamInfo(team.getTeamID());
+            System.out.println(team);
+        } else
+            System.out.println("Team Not Found");
+    }
+
+    private static void rankingTable() {
+        leagueService.rankingTable(league.getTeamList());
+        System.out.println("---------------------------------------");
+        for (int i = 0; i < league.getTeamList().size(); i++) {
+            System.out.println(league.getTeamList().get(i));
+        }
+        System.out.println("---------------------------------------");
+    }
+
     private static boolean showPreviousLeagues() throws SQLException {
-        String [] prevLeaguesName = leagueService.previousLeagues();
-        if(prevLeaguesName.length == 0){
-            System.out.println("No Leagues available");
+        String[] prevLeaguesName = leagueService.previousLeagues();
+        if (prevLeaguesName.length == 0) {
+            System.out.println("No Leagues Available");
             return false;
         }
         System.out.println("---------------------------------------");
@@ -184,6 +184,10 @@ public class Main {
         System.out.println("---------------------------------------");
         System.out.println("Enter The Leauge Name: ");
         String name = scanner.nextLine();
+        if (!ValidLeagueandTeamName.isStringOnlyAlphabet(name)) {
+            System.out.println("Enter a Valid Name,only Alphanumerics are Accepted");
+            return;
+        }
         System.out.println("Enter The Start Date For the Football League:(exp: 2022-01-31) ");
         league = new League(Date.valueOf(scanner.nextLine()), name);
         System.out.println("Enter " + numOfTeams + " Team names which will play in this League:(press enter after each team name) ");
@@ -224,7 +228,7 @@ public class Main {
         System.out.println("Enter Away Team Name: ");
         awayTeam = league.findTeam(scanner.nextLine());
         if (awayTeam == null) {
-            System.out.println("Team not in current League");
+            System.out.println("Team Not in Current League");
             return;
         }
         System.out.println("Enter the Score of the Match(EXP. 3:1) : ");
@@ -237,21 +241,21 @@ public class Main {
         if (leagueService instanceof FootballService) {
             if (homeScore > awayScore) {
                 homePoint = 3;
-                awayPoint = 0;
             } else if (homeScore == awayScore) {
                 homePoint = 1;
                 awayPoint = 1;
             } else {
-                homePoint = 0;
                 awayPoint = 3;
             }
         } else if (leagueService instanceof VolleyballService) {
+            if (!ValidVolleyballScore.isSetScoreValid(homeScore, awayScore)) {
+                System.out.println("Score Not Valid for a Volleyball Match");
+                return;
+            }
             if (homeScore == 3 && (awayScore == 0 || awayScore == 1)) {
                 homePoint = 3;
-                awayPoint = 0;
             } else if (awayScore == 3 && (homeScore == 0 || homeScore == 1)) {
                 awayPoint = 3;
-                homePoint = 0;
             } else if (homeScore == 3 && awayScore == 2) {
                 homePoint = 2;
                 awayPoint = 1;
@@ -269,14 +273,18 @@ public class Main {
             int[] sets = new int[2];
             sets[0] = Integer.parseInt(splited1[0]);
             sets[1] = Integer.parseInt(splited1[1]);
+            if (!ValidVolleyballScore.isPoanValid(homeScore, awayScore, sets[0], sets[1])) {
+                System.out.println("The Poans Entered are NOT consistent with the Score Entered Above");
+                return;
+            }
             ((VolleyballTeam) homeTeam).setPoans(sets[0]);
             ((VolleyballTeam) awayTeam).setPoans(sets[1]);
 
         }
-        if(leagueService.addMatch(league, match))
+        if (leagueService.addMatch(league, match))
             System.out.println("New Match added Successfully");
         else
-            System.out.println("Match not added try again");
+            System.out.println("Match NOT added try again");
         System.out.println("---------------------------------------");
     }
 
@@ -287,27 +295,50 @@ public class Main {
         Team delTeam = league.findTeam(delTeamName);
         if (delTeam != null) {
             if (leagueService.deleteTeam(delTeam)) {
-                System.out.println("Team deleted successfully");
+                System.out.println("Team Deleted Successfully");
                 league.deleteTeam(delTeam);
             } else
-                System.out.println("Unable to delete team");
+                System.out.println("Unable to Delete Team");
         } else
-            System.out.println("Team not found");
+            System.out.println("Team NOT Found");
         System.out.println("---------------------------------------");
+    }
+
+    private static void createTeam() throws SQLException {
+        Team newTeam = null;
+        if (leagueService instanceof FootballService) {
+            newTeam = addTeam(8);
+        } else if (leagueService instanceof VolleyballService) {
+            newTeam = addTeam(5);
+        } else {
+            System.out.println("No suitable service chosen");
+        }
+        if (newTeam != null) {
+            newTeam.setLeagueID(league.getLeagueID());
+            int teamID = leagueService.addTeam(league, newTeam);
+            newTeam.setTeamID(teamID);
+            league.addTeam(newTeam);
+            System.out.println("Team " + newTeam.getTeamName() + " added Successfully!");
+            System.out.println("---------------------------------------");
+        }
     }
 
     private static Team addTeam(int numOfTeams) {
         System.out.println("---------------------------------------");
         Team newTeam = null;
         if (league.getTeamList().size() < numOfTeams) {
-            System.out.println("Enter Team Name to add to the League: ");
-            if (numOfTeams == 8)
-                newTeam = new FootballTeam(scanner.nextLine());
-            else if (numOfTeams == 5) {
-                newTeam = new VolleyballTeam(scanner.nextLine());
+            System.out.println("Enter Team Name to Add to the League: ");
+            String teamName = scanner.nextLine();
+            if (ValidLeagueandTeamName.isStringOnlyAlphabet(teamName)) {
+                if (numOfTeams == 8)
+                    newTeam = new FootballTeam(teamName);
+                else if (numOfTeams == 5) {
+                    newTeam = new VolleyballTeam(teamName);
+                }
+            } else {
+                System.out.println("Enter a Valid Name,only Alphanumerics are Accepted ");
             }
-        }
-        else {
+        } else {
             System.out.println("There are already " + numOfTeams + " Teams in the League, First Delete a Team");
         }
         System.out.println("---------------------------------------");

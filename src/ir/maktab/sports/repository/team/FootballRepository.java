@@ -34,9 +34,7 @@ public class FootballRepository implements TeamRepository {
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, team.getTeamID());
         preparedStatement.setInt(2,team.getLeagueID());
-        if (preparedStatement.executeUpdate() != 0)
-            return true;
-        return false;
+        return preparedStatement.executeUpdate() != 0;
     }
 
     @Override
@@ -78,9 +76,7 @@ public class FootballRepository implements TeamRepository {
         preparedStatement.setInt(7,team.getPoints());
         preparedStatement.setInt(8,team.getTeamID());
 
-        if (preparedStatement.executeUpdate() != 0)
-            return true;
-        return false;
+        return preparedStatement.executeUpdate() != 0;
 
     }
 
@@ -115,9 +111,7 @@ public class FootballRepository implements TeamRepository {
         preparedStatement.setInt(5, match.getHomeTeamID());
         preparedStatement.setInt(6, match.getAwayTeamID());
         preparedStatement.setInt(7, match.getLeagueID());
-        if (preparedStatement.executeUpdate() != 0)
-            return true;
-        return false;
+        return preparedStatement.executeUpdate() != 0;
     }
 
     @Override
@@ -148,9 +142,7 @@ public class FootballRepository implements TeamRepository {
         PreparedStatement preparedStatement = AppConstant.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, leagueID);
         preparedStatement.setInt(2, team.getTeamID());
-        if (preparedStatement.executeUpdate() != 0)
-            return true;
-        return false;
+        return preparedStatement.executeUpdate() != 0;
     }
 
     @Override
@@ -184,9 +176,7 @@ public class FootballRepository implements TeamRepository {
         PreparedStatement preparedStatement1 = AppConstant.getConnection().prepareStatement(updatesql);
         preparedStatement1.setInt(1, team.getTeamID());
         preparedStatement1.setInt(2, team.getLeagueID());
-        if (preparedStatement1.executeUpdate() != 0)
-            return true;
-        return false;
+        return preparedStatement1.executeUpdate() != 0;
     }
 
     @Override

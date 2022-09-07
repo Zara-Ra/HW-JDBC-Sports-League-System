@@ -2,7 +2,6 @@ package ir.maktab.sports.data.team;
 
 public class VolleyballTeam extends Team{
     private int poans ;
-
     private int scoreSets;
     public VolleyballTeam(String teamName) {
         super(teamName);
