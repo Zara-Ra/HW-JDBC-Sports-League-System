@@ -11,6 +11,8 @@ import ir.maktab.sports.service.VolleyballService;
 import ir.maktab.sports.util.AppConstant;
 import ir.maktab.sports.util.validation.ValidLeagueandTeamName;
 import ir.maktab.sports.util.validation.ValidVolleyballScore;
+import ir.maktab.sports.view.enums.FirstMenuOption;
+import ir.maktab.sports.view.enums.SecondMenuOption;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -19,13 +21,6 @@ import java.util.Scanner;
 import static java.lang.System.exit;
 
 public class Main {
-    enum FirstMenuOption {
-        FOOTBALLLEAGUE, VOLLEYBALLLEAGUE, PREVIOUSLEAGUE, EXIT
-    }
-
-    enum SecondMenuOption {
-        LEAGUEINFO, DELETETEAM, ADDTEAM, ADDMATCH, TEAMINFO, RANKING, PREVMENU, EXIT
-    }
 
     private static final Scanner scanner = AppConstant.getScanner();
     private static League league;
@@ -193,7 +188,7 @@ public class Main {
         System.out.println("Enter " + numOfTeams + " Team names which will play in this League:(press enter after each team name) ");
         Team team;
         if (leagueService instanceof FootballService) {
-            for (int i = 0; i < numOfTeams; i++) {
+            for (int i = 0; i < numOfTeams; i++) {//TODO Validate team name
                 team = new FootballTeam(scanner.nextLine());
                 league.addTeam(team);
             }
