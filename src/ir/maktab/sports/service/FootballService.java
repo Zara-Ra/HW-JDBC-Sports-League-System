@@ -1,12 +1,15 @@
 package ir.maktab.sports.service;
 
-import ir.maktab.sports.data.League;
-import ir.maktab.sports.data.Match;
+import ir.maktab.sports.dao.League;
+import ir.maktab.sports.dao.Match;
+import ir.maktab.sports.dao.enums.Sports;
+import ir.maktab.sports.repository.LeagueRepository;
+import ir.maktab.sports.repository.MatchRepository;
+import ir.maktab.sports.repository.TeamRepository;
 import ir.maktab.sports.util.sortHelper.sortByDiffGoal;
 import ir.maktab.sports.util.sortHelper.sortByPoints;
-import ir.maktab.sports.data.team.FootballTeam;
-import ir.maktab.sports.data.team.Team;
-import ir.maktab.sports.repository.team.FootballRepository;
+import ir.maktab.sports.dao.team.FootballTeam;
+import ir.maktab.sports.dao.team.Team;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -14,38 +17,39 @@ import java.util.List;
 
 public class FootballService implements LeagueService {
 
-    final private FootballRepository footballRepository = new FootballRepository();
+    final private LeagueRepository leagueRepository = new LeagueRepository();
+    final private MatchRepository matchRepository = new MatchRepository();
+    final private TeamRepository teamRepository = new TeamRepository();
 
     @Override
     public int addTeam(League league, Team team) throws SQLException {
-        int teamID = footballRepository.addTeam(team);
+        int teamID = teamRepository.addTeam(team);
         team.setTeamID(teamID);
-        footballRepository.setTeamsLeagueID(team, league.getLeagueID());
-        team.setLeagueID(league.getLeagueID());
-        footballRepository.updateLeague(team);
         int initialSize = league.getTeamList().size();
         for (int i = 0; i < initialSize; i++) {
             Match match = new Match(league.getLeagueID(), team.getTeamID(), league.getTeamList().get(i).getTeamID());
-            int matchID = footballRepository.addMatch(match);
-            match.setMatchID(matchID);
-            match.setLeagueID(league.getLeagueID());
+            matchRepository.addMatch(match);
         }
         for (int i = 0; i < initialSize; i++) {
             Match match = new Match(league.getLeagueID(), league.getTeamList().get(i).getTeamID(), team.getTeamID());
-            int matchID = footballRepository.addMatch(match);
-            match.setMatchID(matchID);
+            matchRepository.addMatch(match);
         }
         return teamID;
     }
 
     @Override
     public boolean deleteTeam(Team team) throws SQLException {
-        return footballRepository.removeTeam(team);
+        return teamRepository.removeTeam(team);
     }
 
     @Override
     public Team teamInfo(int ID) throws SQLException {
-        return footballRepository.teamInfoByID(ID);
+        return teamRepository.teamByID(ID, Sports.FOOTBALL);
+    }
+
+    @Override
+    public List<Team> findTeamsByLeagueID(int leagueID) throws SQLException {
+        return teamRepository.teamsByLeagueID(leagueID, Sports.FOOTBALL);
     }
 
     @Override
@@ -62,37 +66,34 @@ public class FootballService implements LeagueService {
         awayT.setGoalsFor(awayT.getGoalsFor() + match.getHomeTeamScore());
         awayT.setGoalsAgainst(awayT.getGoalsAgainst() + match.getHomeTeamScore());
 
-        homeT.setPoints(homeT.getPoints() + match.getHomeTeamPoints());
-        awayT.setPoints(awayT.getPoints() + match.getAwayTeamPoints());
         if (match.getHomeTeamScore() > match.getAwayTeamScore()) {
             homeT.setWon(homeT.getWon() + 1);
             awayT.setLost(awayT.getLost() + 1);
+            homeT.setPoints(homeT.getPoints() + 3);
         } else if (match.getHomeTeamScore() == match.getAwayTeamScore()) {
             homeT.setDrawn(homeT.getDrawn() + 1);
             awayT.setDrawn(awayT.getDrawn() + 1);
+            homeT.setPoints(homeT.getPoints() + 1);
+            awayT.setPoints(awayT.getPoints() + 1);
         } else {
             awayT.setWon(awayT.getWon() + 1);
             homeT.setLost(homeT.getLost() + 1);
+            awayT.setPoints(awayT.getPoints() + 3);
         }
-        footballRepository.updateTeam(homeT);
-        footballRepository.updateTeam(awayT);
-        return footballRepository.updateMatch(match);
+        teamRepository.updateTeam(homeT, Sports.FOOTBALL);
+        teamRepository.updateTeam(awayT, Sports.FOOTBALL);
+        return matchRepository.updateMatch(match, Sports.FOOTBALL);
     }
 
     @Override
     public int addLeague(League league) throws SQLException {
+        int leagueID = leagueRepository.addLeague(league);
+        league.setLeagueID(leagueID);
         int initialListsize = league.getTeamList().size();
         for (int i = 0; i < initialListsize; i++) {
-            int teamID = footballRepository.addTeam(league.getTeamList().get(i));
-            league.getTeamList().get(i).setTeamID(teamID);
-        }
-
-        int leagueID = footballRepository.addLeague(league);
-        league.setLeagueID(leagueID);
-
-        for (int i = 0; i < initialListsize; i++) {
-            footballRepository.setTeamsLeagueID(league.getTeamList().get(i), leagueID);
             league.getTeamList().get(i).setLeagueID(leagueID);
+            int teamID = teamRepository.addTeam(league.getTeamList().get(i));
+            league.getTeamList().get(i).setTeamID(teamID);
         }
         for (int i = 0; i < initialListsize; i++) {
             for (int j = 0; j < initialListsize; j++) {
@@ -100,8 +101,7 @@ public class FootballService implements LeagueService {
                 Team awayteam = league.getTeamList().get(j);
                 if (!hometeam.equals(awayteam)) {
                     Match match = new Match(leagueID, hometeam.getTeamID(), awayteam.getTeamID());
-                    int matchID = footballRepository.addMatch(match);
-                    match.setMatchID(matchID);
+                    matchRepository.addMatch(match);
                 }
             }
         }
@@ -115,8 +115,13 @@ public class FootballService implements LeagueService {
     }
 
     @Override
-    public String[] previousLeagues() throws SQLException {
-        return footballRepository.showAllLeague();
+    public List<League> previousLeagues() throws SQLException {
+        return leagueRepository.showAllLeague(Sports.FOOTBALL);
+    }
+
+    @Override
+    public League findLeagueByName(String leagueName) throws SQLException {
+        return leagueRepository.leagueByName(leagueName);
     }
 
     @Override

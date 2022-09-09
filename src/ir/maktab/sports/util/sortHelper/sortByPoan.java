@@ -1,7 +1,7 @@
 package ir.maktab.sports.util.sortHelper;
 
-import ir.maktab.sports.data.team.Team;
-import ir.maktab.sports.data.team.VolleyballTeam;
+import ir.maktab.sports.dao.team.Team;
+import ir.maktab.sports.dao.team.VolleyballTeam;
 
 import java.util.Comparator;
 

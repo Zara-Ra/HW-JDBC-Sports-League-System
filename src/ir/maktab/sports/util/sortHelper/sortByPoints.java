@@ -1,6 +1,6 @@
 package ir.maktab.sports.util.sortHelper;
 
-import ir.maktab.sports.data.team.Team;
+import ir.maktab.sports.dao.team.Team;
 
 import java.util.Comparator;
 
