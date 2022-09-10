@@ -15,6 +15,7 @@ import java.util.List;
 
 public class TeamRepository {
     public int addTeam(Team team) throws SQLException {
+        int result = 0;
         String sql = "INSERT INTO team(league_id,team_name) VALUES (?,?)";
         Connection connection = AppConstant.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -22,15 +23,14 @@ public class TeamRepository {
         preparedStatement.setString(2, team.getTeamName());
         preparedStatement.executeUpdate();
 
-
         String sqlID = "SELECT team_id FROM team WHERE team_name = ? AND league_id = ?";
         PreparedStatement prS = AppConstant.getConnection().prepareStatement(sqlID);
         prS.setString(1, team.getTeamName());
         prS.setInt(2,team.getLeagueID());
         ResultSet resultSet = prS.executeQuery();
         if (resultSet.next())
-            return resultSet.getInt(1);
-        return 0;
+            result = resultSet.getInt(1);
+        return result;
     }
     public boolean removeTeam(Team team) throws SQLException{
         String sql = "DELETE FROM team WHERE team_id = ? AND league_id = ?";
@@ -41,6 +41,7 @@ public class TeamRepository {
         return preparedStatement.executeUpdate() > 0;
     }
     public Team teamByID(int ID, Sports sportType) throws SQLException {
+        Team team = null;
         String sql = "SELECT * FROM team WHERE team_id = ?";
         Connection connection = AppConstant.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -59,17 +60,14 @@ public class TeamRepository {
             int goalsAgainst = resultSet.getInt(9);
             int drawn = resultSet.getInt(10);
 
-            Team team = null;
             if(sportType == Sports.FOOTBALL) {
                 team = new FootballTeam(id,leagueID,name,played,won,lost,points,drawn,goalsFor,goalsAgainst);
             }
             else if (sportType == Sports.VOLLEYBALL) {
                 team = new VolleyballTeam(id,leagueID,name,played,won,lost,points,goalsFor,goalsAgainst);
             }
-            return team;
         }
-        preparedStatement.close();
-        return null;
+        return team;
     }
     public List<Team> teamsByLeagueID(int leagueID,Sports sportType) throws SQLException {
         List<Team> teamList = new ArrayList<>();
@@ -121,8 +119,7 @@ public class TeamRepository {
         }
         preparedStatement.setInt(8,team.getTeamID());
 
-        return preparedStatement.executeUpdate() != 0;
-
+        return preparedStatement.executeUpdate() > 0;
     }
 
 }

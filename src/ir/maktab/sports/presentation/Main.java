@@ -10,8 +10,7 @@ import ir.maktab.sports.service.FootballService;
 import ir.maktab.sports.service.LeagueService;
 import ir.maktab.sports.service.VolleyballService;
 import ir.maktab.sports.util.AppConstant;
-import ir.maktab.sports.util.validation.ValidLeagueandTeamName;
-import ir.maktab.sports.util.validation.ValidVolleyballScore;
+import ir.maktab.sports.util.validation.Validate;
 import ir.maktab.sports.presentation.enums.FirstMenuOption;
 import ir.maktab.sports.presentation.enums.SecondMenuOption;
 
@@ -24,7 +23,7 @@ import static java.lang.System.exit;
 
 public class Main {
 
-    private static final Scanner scanner = AppConstant.getScanner();
+    private static final Scanner scanner = AppConstant.getScanner();//ToDo when to close connection db
     private static League league;
     private static LeagueService leagueService;
 
@@ -49,12 +48,12 @@ public class Main {
             case FOOTBALLLEAGUE:
                 leagueService = new FootballService();
                 createNewLeague(Sports.FOOTBALL);
-                //firstMenu();
+                firstMenu();
                 break;
             case VOLLEYBALLLEAGUE:
                 leagueService = new VolleyballService();
                 createNewLeague(Sports.VOLLEYBALL);
-                //firstMenu();
+                firstMenu();
                 break;
             case PREVIOUSLEAGUE:
                 previousLeagues();
@@ -147,7 +146,7 @@ public class Main {
                 case 1:
                     System.out.println("Enter a League Name to Edit Info: ");
                     String prevLeagueName = scanner.nextLine();
-                    if (ValidLeagueandTeamName.isStringOnlyAlphabet(prevLeagueName)) {
+                    if (Validate.isNameValid(prevLeagueName)) {
                         League local = leagueService.findLeagueByName(prevLeagueName);
                         if (local != null) {
                             league = local;
@@ -158,12 +157,12 @@ public class Main {
                             firstMenu();
                         }
                     } else {
-                        System.out.println("Enter a Valid Name,only Alphanumerics are Accepted");
+                       printValidationErr();
                         firstMenu();
                     }
                     break;
                 case 2:
-                    secondMenu();
+                    firstMenu();
                     break;
             }
         } else
@@ -177,8 +176,8 @@ public class Main {
             return false;
         }
         System.out.println("---------------------------------------");
-        for (League value : prevLeagues) {
-            System.out.println(value);
+        for (int i = 0; i < prevLeagues.size(); i++) {
+            System.out.println(prevLeagues.get(i).getLeagueName() + "   " + prevLeagues.get(i).getStartDate());
         }
         System.out.println("---------------------------------------");
         return true;
@@ -209,30 +208,40 @@ public class Main {
         System.out.println("---------------------------------------");
         System.out.println("Enter The Leauge Name: ");
         String name = scanner.nextLine();
-        if (!ValidLeagueandTeamName.isStringOnlyAlphabet(name)) {
-            System.out.println("Enter a Valid Name,only Alphanumerics are Accepted");
+        if (!Validate.isNameValid(name)) {
+            printValidationErr();
             return;
         }
         System.out.println("Enter The Start Date For the League:(exp: 2022-01-31) ");
         league = new League(Date.valueOf(scanner.nextLine()), name, sportType);
-        System.out.println("How Many Teams are playing in the league : ");
+        System.out.println("How Many Teams are Playing in the League : ");
         int numOfTeams = Integer.parseInt(scanner.nextLine());
         System.out.println("Enter " + numOfTeams + " Team names which will play in this League:(press enter after each team name) ");
         Team team;
         if (leagueService instanceof FootballService) {
-            for (int i = 0; i < numOfTeams; i++) {//TODO Validate team name
-                team = new FootballTeam(scanner.nextLine());
+            for (int i = 0; i < numOfTeams; i++) {
+                String teamName = scanner.nextLine();
+                if(!Validate.isNameValid(teamName)){
+                    printValidationErr();
+                    continue;
+                }
+                team = new FootballTeam(teamName);
                 league.addTeam(team);
             }
         } else if (leagueService instanceof VolleyballService) {
             for (int i = 0; i < numOfTeams; i++) {
-                team = new VolleyballTeam(scanner.nextLine());
+                String teamName = scanner.nextLine();
+                if(!Validate.isNameValid(teamName)){
+                    printValidationErr();
+                    continue;
+                }
+                team = new VolleyballTeam(teamName);
                 league.addTeam(team);
             }
         }
         league.setLeagueID(leagueService.addLeague(league));
         if (league.getLeagueID() != 0) {
-            System.out.println("League  " + league.getLeagueName() + " Created Successfully!");
+            System.out.println("League  " + league.getLeagueName() + " Created Successfully with "+league.getTeamList().size()+" Teams!");
             System.out.println("---------------------------------------");
             secondMenu();
         } else {
@@ -265,7 +274,7 @@ public class Main {
         awayScore = Integer.parseInt(splited[1]);
 
         if (leagueService instanceof VolleyballService) {
-            if (!ValidVolleyballScore.isSetScoreValid(homeScore, awayScore)) {
+            if (!Validate.isSetScoreValid(homeScore, awayScore)) {
                 System.out.println("Score Not Valid for a Volleyball Match");
                 return;
             }
@@ -279,7 +288,7 @@ public class Main {
             int[] sets = new int[2];
             sets[0] = Integer.parseInt(splited1[0]);
             sets[1] = Integer.parseInt(splited1[1]);
-            if (!ValidVolleyballScore.isPoanValid(homeScore, awayScore, sets[0], sets[1])) {
+            if (!Validate.isPoanValid(homeScore, awayScore, sets[0], sets[1])) {
                 System.out.println("The Poans Entered are NOT consistent with the Score Entered Above");
                 return;
             }
@@ -313,7 +322,7 @@ public class Main {
     private static void createTeam() throws SQLException {
         System.out.println("Enter Team Name to Add to the League: ");
         String teamName = scanner.nextLine();
-        if (ValidLeagueandTeamName.isStringOnlyAlphabet(teamName)) {
+        if (Validate.isNameValid(teamName)) {
             Team newTeam = null;
             if (leagueService instanceof FootballService)
                 newTeam = new FootballTeam(league.getLeagueID(), teamName);
@@ -326,7 +335,12 @@ public class Main {
             System.out.println("Team " + newTeam.getTeamName() + " added Successfully!");
             System.out.println("---------------------------------------");
         } else
-            System.out.println("Enter a Valid Name,only Alphanumerics are Accepted ");
+            printValidationErr();
     }
 
+    private static void printValidationErr() {
+        System.out.println("Enter a Valid Name");
+        System.out.println("The length should be at least 5 characters");
+        System.out.println("Special Characters are not allowed");
+    }
 }

@@ -14,7 +14,7 @@ public class MatchRepository {
         preparedStatement.setInt(1, match.getHomeTeamID());
         preparedStatement.setInt(2, match.getAwayTeamID());
         preparedStatement.setInt(3, match.getLeagueID());
-        return preparedStatement.executeUpdate() != 0;
+        return preparedStatement.executeUpdate() > 0;
     }
 
     public boolean updateMatch(Match match, Sports sportsType) throws SQLException {
@@ -26,7 +26,7 @@ public class MatchRepository {
         preparedStatement.setInt(3, match.getHomeTeamID());
         preparedStatement.setInt(4, match.getAwayTeamID());
         preparedStatement.setInt(5, match.getLeagueID());
-        return preparedStatement.executeUpdate() != 0;
+        return preparedStatement.executeUpdate() > 0;
     }
 
 }

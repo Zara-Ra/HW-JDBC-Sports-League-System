@@ -1,6 +1,6 @@
 package ir.maktab.sports.util.validation;
 
-public class ValidVolleyballScore {
+public class Validate {
     public static boolean isSetScoreValid(int a, int b) {
         if (a == 3 && (b == 0 || b == 1))
             return true;
@@ -20,4 +20,10 @@ public class ValidVolleyballScore {
             return true;
         return false;
     }
+    public static boolean isNameValid(String str) {
+        return ((!str.equals(""))
+                && (str != null)
+                && (str.matches("^[a-zA-Z0-9\s]{5,}$")));
+    }
 }
+

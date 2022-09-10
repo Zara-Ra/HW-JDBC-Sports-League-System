@@ -116,7 +116,7 @@ public class FootballService implements LeagueService {
 
     @Override
     public List<League> previousLeagues() throws SQLException {
-        return leagueRepository.showAllLeague(Sports.FOOTBALL);
+        return leagueRepository.allLeagues(Sports.FOOTBALL);
     }
 
     @Override

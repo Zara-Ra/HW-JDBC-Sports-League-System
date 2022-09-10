@@ -10,6 +10,7 @@ import java.util.List;
 
 public class LeagueRepository {
     public int addLeague(League league) throws SQLException {
+        int result = 0;
         String sql = "INSERT INTO league (league_name,start_date,sport_type) VALUES (?,?,?)";
         Connection connection = AppConstant.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -23,12 +24,12 @@ public class LeagueRepository {
         prepared.setString(1, league.getLeagueName());
         ResultSet resultSet = prepared.executeQuery();
         if (resultSet.next()) {
-            return resultSet.getInt(1);
+            result = resultSet.getInt(1);
         }
-        return 0;
+        return result;
 
     }
-    public List<League> showAllLeague(Sports sports) throws SQLException {
+    public List<League> allLeagues(Sports sports) throws SQLException {
         String sql = "SELECT league_name, start_date FROM league WHERE sport_type = ?";
         Connection connection = AppConstant.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -57,7 +58,6 @@ public class LeagueRepository {
             Sports sportType = Sports.valueOf(resultSet.getString(4));
             result = new League(league_id,startDate,leagueName,sportType);
         }
-        //connection.close();
         return result;
     }
 }
