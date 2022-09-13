@@ -72,6 +72,7 @@ public class Main {
     public static void secondMenu() throws SQLException {
         System.out.println("---------------------------------------");
         System.out.println(leagueService);
+        System.out.println(league.getLeagueName());
         System.out.println("---------------------------------------");
         System.out.println("Press 1 --> Show League Info");
         System.out.println("Press 2 --> Delete Team");

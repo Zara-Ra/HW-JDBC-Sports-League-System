@@ -47,13 +47,14 @@ public class FootballTeam extends Team{
     @Override
     public String toString() {
 
-        return "Team Information Of " + super.getTeamName()+"\n"+
+        return  super.getTeamName()+"\n"+
                 " Played : " + super.getPlayed() +
                 "\t Won :" + super.getWon() +
                 "\t Drawn : " + drawn +
                 "\t Lost : " + super.getLost()+
                 "\t GF : " + goalsFor +
                 "\t GA : " + goalsAgainst +
-                "\t POINTS : "+ super.getPoints();
+                "\t GD : " + (goalsFor-goalsAgainst) +
+                "\t POINTS : "+ super.getPoints()+"\n";
     }
 }

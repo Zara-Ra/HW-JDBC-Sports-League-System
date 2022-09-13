@@ -116,12 +116,12 @@ public class FootballService implements LeagueService {
 
     @Override
     public List<League> previousLeagues() throws SQLException {
-        return leagueRepository.allLeagues(Sports.FOOTBALL);
+        return leagueRepository.getAllLeagues(Sports.FOOTBALL);
     }
 
     @Override
     public League findLeagueByName(String leagueName) throws SQLException {
-        return leagueRepository.leagueByName(leagueName);
+        return leagueRepository.findLeagueByName(leagueName);
     }
 
     @Override

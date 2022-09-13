@@ -23,7 +23,7 @@ public class Validate {
     public static boolean isNameValid(String str) {
         return ((!str.equals(""))
                 && (str != null)
-                && (str.matches("^[a-zA-Z0-9\s]{5,}$")));
+                && (str.matches("^[\\w\\.\s]{5,}$")));
     }
 }
 

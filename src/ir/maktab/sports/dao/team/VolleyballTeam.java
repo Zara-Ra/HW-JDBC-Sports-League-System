@@ -35,12 +35,12 @@ public class VolleyballTeam extends Team{
 
     @Override
     public String toString() {
-        return "Volleyball Team " + super.getTeamName()+
+        return  super.getTeamName()+"\n"+
                 " Played : "+super.getPlayed()+
                 "\t Won : "+super.getWon()+
                 "\t Lost : "+super.getLost()+
                 "\t Total Points : "+ super.getPoints()+
                 "\t Won Sets : "+ scoreSets+
-                "\t Poans : " + poans;
+                "\t Poans : " + poans+"\n";
     }
 }

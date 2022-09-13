@@ -29,7 +29,7 @@ public class LeagueRepository {
         return result;
 
     }
-    public List<League> allLeagues(Sports sports) throws SQLException {
+    public List<League> getAllLeagues(Sports sports) throws SQLException {
         String sql = "SELECT league_name, start_date FROM league WHERE sport_type = ?";
         Connection connection = AppConstant.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -44,7 +44,7 @@ public class LeagueRepository {
         }
         return leagueList;
     }
-    public League leagueByName(String leagueName) throws SQLException {
+    public League findLeagueByName(String leagueName) throws SQLException {
         League result = null;
         String sql = "SELECT * FROM league WHERE league_name = ?";
         Connection connection = AppConstant.getConnection();

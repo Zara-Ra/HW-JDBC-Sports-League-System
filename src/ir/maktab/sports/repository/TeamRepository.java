@@ -15,14 +15,16 @@ import java.util.List;
 
 public class TeamRepository {
     public int addTeam(Team team) throws SQLException {
-        int result = 0;
         String sql = "INSERT INTO team(league_id,team_name) VALUES (?,?)";
         Connection connection = AppConstant.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, team.getLeagueID());
         preparedStatement.setString(2, team.getTeamName());
         preparedStatement.executeUpdate();
-
+        return findTeamID(team);
+    }
+    public int findTeamID(Team team) throws SQLException {
+        int result = 0;
         String sqlID = "SELECT team_id FROM team WHERE team_name = ? AND league_id = ?";
         PreparedStatement prS = AppConstant.getConnection().prepareStatement(sqlID);
         prS.setString(1, team.getTeamName());
