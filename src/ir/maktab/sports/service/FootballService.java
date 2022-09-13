@@ -3,13 +3,13 @@ package ir.maktab.sports.service;
 import ir.maktab.sports.dao.League;
 import ir.maktab.sports.dao.Match;
 import ir.maktab.sports.dao.enums.Sports;
+import ir.maktab.sports.dao.team.FootballTeam;
+import ir.maktab.sports.dao.team.Team;
 import ir.maktab.sports.repository.LeagueRepository;
 import ir.maktab.sports.repository.MatchRepository;
 import ir.maktab.sports.repository.TeamRepository;
 import ir.maktab.sports.util.sortHelper.sortByDiffGoal;
 import ir.maktab.sports.util.sortHelper.sortByPoints;
-import ir.maktab.sports.dao.team.FootballTeam;
-import ir.maktab.sports.dao.team.Team;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -44,12 +44,12 @@ public class FootballService implements LeagueService {
 
     @Override
     public Team teamInfo(int ID) throws SQLException {
-        return teamRepository.teamByID(ID, Sports.FOOTBALL);
+        return teamRepository.findTeamByID(ID, Sports.FOOTBALL);
     }
 
     @Override
     public List<Team> findTeamsByLeagueID(int leagueID) throws SQLException {
-        return teamRepository.teamsByLeagueID(leagueID, Sports.FOOTBALL);
+        return teamRepository.findTeamsByLeagueID(leagueID, Sports.FOOTBALL);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class FootballService implements LeagueService {
         homeT.setGoalsFor(homeT.getGoalsFor() + match.getHomeTeamScore());
         homeT.setGoalsAgainst(homeT.getGoalsAgainst() + match.getAwayTeamScore());
 
-        awayT.setGoalsFor(awayT.getGoalsFor() + match.getHomeTeamScore());
+        awayT.setGoalsFor(awayT.getGoalsFor() + match.getAwayTeamScore());
         awayT.setGoalsAgainst(awayT.getGoalsAgainst() + match.getHomeTeamScore());
 
         if (match.getHomeTeamScore() > match.getAwayTeamScore()) {

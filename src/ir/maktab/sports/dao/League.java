@@ -14,13 +14,14 @@ public class League {
     private String leagueName;
     private Date startDate;
     private Sports sportType;
-    public League(Date startDate,String leagueName,Sports type) {
+
+    public League(Date startDate, String leagueName, Sports type) {
         this.startDate = startDate;
         this.leagueName = leagueName;
         this.sportType = type;
     }
 
-    public League(int leagueID,  Date startDate,String leagueName, Sports sportType) {
+    public League(int leagueID, Date startDate, String leagueName, Sports sportType) {
         LeagueID = leagueID;
         this.leagueName = leagueName;
         this.startDate = startDate;
@@ -75,14 +76,15 @@ public class League {
         teamList.remove(team);
     }
 
-    public Team findTeam(int id){
+    public Team findTeam(int id) {
         for (Team team : teamList) {
             if (team.getTeamID() == id)
                 return team;
         }
         return null;
     }
-    public Team findTeam(String name){
+
+    public Team findTeam(String name) {
         for (Team team : teamList) {
             if (name.equals(team.getTeamName()))
                 return team;
@@ -111,7 +113,7 @@ public class League {
             teamNames = teamNames.concat(" ");
         }
         return "League Name " + leagueName +
-                " Start Date " + startDate+
+                " Start Date " + startDate +
                 "\n Team Names : " + teamNames;
     }
 }

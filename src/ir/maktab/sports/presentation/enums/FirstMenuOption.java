@@ -1,6 +1,9 @@
 package ir.maktab.sports.presentation.enums;
 
 public enum FirstMenuOption {
-        FOOTBALLLEAGUE, VOLLEYBALLLEAGUE, PREVIOUSLEAGUE, EXIT
-    }
+    FOOTBALLLEAGUE,
+    VOLLEYBALLLEAGUE,
+    PREVIOUSLEAGUE,
+    EXIT
+}
 

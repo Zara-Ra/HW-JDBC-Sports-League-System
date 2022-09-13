@@ -7,10 +7,10 @@ public class Match {
     private int leagueID;
     private int homeTeamID;
     private int awayTeamID;
-    private    int homeTeamScore;
+    private int homeTeamScore;
     private int awayTeamScore;
 
-    public Match(int homeTeamID, int awayTeamID, int leagueID,int homeTeamScore,int awayTeamScore) {
+    public Match(int homeTeamID, int awayTeamID, int leagueID, int homeTeamScore, int awayTeamScore) {
         this.homeTeamID = homeTeamID;
         this.awayTeamID = awayTeamID;
         this.leagueID = leagueID;
@@ -88,8 +88,8 @@ public class Match {
 
     @Override
     public String toString() {
-        return "Match Information of match ID "+ matchID +"\n "+
-                "Score of Home Team ID " + homeTeamID +" : "+ homeTeamScore +
-                "Score of Away Team ID " + awayTeamID +" : "+ awayTeamScore;
+        return "Match Information of match ID " + matchID + "\n " +
+                "Score of Home Team ID " + homeTeamID + " : " + homeTeamScore +
+                "Score of Away Team ID " + awayTeamID + " : " + awayTeamScore;
     }
 }

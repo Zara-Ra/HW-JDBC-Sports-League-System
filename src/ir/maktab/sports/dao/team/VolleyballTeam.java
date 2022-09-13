@@ -1,8 +1,9 @@
 package ir.maktab.sports.dao.team;
 
-public class VolleyballTeam extends Team{
-    private int poans ;
+public class VolleyballTeam extends Team {
+    private int poans;
     private int scoreSets;
+
     public VolleyballTeam(String teamName) {
         super(teamName);
     }
@@ -35,12 +36,12 @@ public class VolleyballTeam extends Team{
 
     @Override
     public String toString() {
-        return  super.getTeamName()+"\n"+
-                " Played : "+super.getPlayed()+
-                "\t Won : "+super.getWon()+
-                "\t Lost : "+super.getLost()+
-                "\t Total Points : "+ super.getPoints()+
-                "\t Won Sets : "+ scoreSets+
-                "\t Poans : " + poans+"\n";
+        return super.getTeamName() + "\n" +
+                " Played : " + super.getPlayed() +
+                "\t Won : " + super.getWon() +
+                "\t Lost : " + super.getLost() +
+                "\t Total Points : " + super.getPoints() +
+                "\t Won Sets : " + scoreSets +
+                "\t Poans : " + poans + "\n";
     }
 }

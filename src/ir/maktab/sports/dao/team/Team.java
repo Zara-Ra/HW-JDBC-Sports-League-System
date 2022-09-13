@@ -2,7 +2,7 @@ package ir.maktab.sports.dao.team;
 
 import java.util.Objects;
 
-public  class Team {
+public class Team {
     private int teamID;
     private int leagueID;
     private String teamName;
@@ -20,6 +20,7 @@ public  class Team {
         this.lost = lost;
         this.points = points;
     }
+
     public Team(String teamName) {
         this.teamName = teamName;
     }
@@ -96,7 +97,7 @@ public  class Team {
 
     @Override
     public String toString() {
-        return "Team Information of " + teamName+"\n"+
+        return "Team Information of " + teamName + "\n" +
                 " Played : " + Played +
                 "\t Won :" + won +
                 "\t Lost : " + lost;

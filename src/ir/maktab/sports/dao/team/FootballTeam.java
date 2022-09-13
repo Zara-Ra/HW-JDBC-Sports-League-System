@@ -1,6 +1,6 @@
 package ir.maktab.sports.dao.team;
 
-public class FootballTeam extends Team{
+public class FootballTeam extends Team {
     private int drawn;
     private int goalsFor;
     private int goalsAgainst;
@@ -47,14 +47,14 @@ public class FootballTeam extends Team{
     @Override
     public String toString() {
 
-        return  super.getTeamName()+"\n"+
+        return super.getTeamName() + "\n" +
                 " Played : " + super.getPlayed() +
                 "\t Won :" + super.getWon() +
                 "\t Drawn : " + drawn +
-                "\t Lost : " + super.getLost()+
+                "\t Lost : " + super.getLost() +
                 "\t GF : " + goalsFor +
                 "\t GA : " + goalsAgainst +
-                "\t GD : " + (goalsFor-goalsAgainst) +
-                "\t POINTS : "+ super.getPoints()+"\n";
+                "\t GD : " + (goalsFor - goalsAgainst) +
+                "\t POINTS : " + super.getPoints() + "\n";
     }
 }

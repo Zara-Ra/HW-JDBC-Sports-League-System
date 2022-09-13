@@ -20,6 +20,7 @@ public class Validate {
             return true;
         return false;
     }
+
     public static boolean isNameValid(String str) {
         return ((!str.equals(""))
                 && (str != null)

@@ -54,7 +54,7 @@ public class MainHandler {
                 break;
             default:
                 System.out.println("---------------------------------------");
-                System.out.println("Press a valid number...");
+                System.out.println("*** Press a valid number... ***");
                 System.out.println("---------------------------------------");
                 firstMenu();
                 break;
@@ -109,7 +109,7 @@ public class MainHandler {
             case EXIT -> exit(0);
             default -> {
                 System.out.println("---------------------------------------");
-                System.out.println("Press a Valid Number...");
+                System.out.println("*** Press a Valid Number... ***");
                 System.out.println("---------------------------------------");
                 secondMenu();
             }
@@ -127,13 +127,15 @@ public class MainHandler {
         else if (num == 2)
             leagueService = new VolleyballService();
         else {
-            System.out.println("Wrong number entered");
+            System.out.println("*** Press a valid number ***");
             firstMenu();
             return;
         }
         if (hasPreviousLeagues()) {
+            System.out.println("---------------------------------------");
             System.out.println("Press 1 --> Edit Previous League");
             System.out.println("Press 2 --> Back");
+            System.out.println("---------------------------------------");
             int number = Integer.parseInt(scanner.nextLine());
             switch (number) {
                 case 1:
@@ -146,7 +148,7 @@ public class MainHandler {
                             league.setTeamList(leagueService.findTeamsByLeagueID(league.getLeagueID()));
                             secondMenu();
                         } else {
-                            System.out.println("League Not Found");
+                            System.out.println("*** League Not Found ***");
                             firstMenu();
                         }
                     } else {
@@ -165,7 +167,7 @@ public class MainHandler {
     private boolean hasPreviousLeagues() throws SQLException {
         List<League> prevLeagues = leagueService.previousLeagues();
         if (prevLeagues.size() == 0) {
-            System.out.println("No Leagues Available");
+            System.out.println("*** No Leagues Available ***");
             return false;
         }
         System.out.println("---------------------------------------");
@@ -185,7 +187,7 @@ public class MainHandler {
             team = leagueService.teamInfo(team.getTeamID());
             System.out.println(team);
         } else
-            System.out.println("Team Not Found");
+            System.out.println("*** Team Not Found ***");
     }
 
     private void rankingTable() {
@@ -214,7 +216,7 @@ public class MainHandler {
         if (leagueService instanceof FootballService) {
             for (int i = 0; i < numOfTeams; i++) {
                 String teamName = scanner.nextLine();
-                if(!Validate.isNameValid(teamName)){
+                if (!Validate.isNameValid(teamName)) {
                     printValidationErr();
                     continue;
                 }
@@ -224,7 +226,7 @@ public class MainHandler {
         } else if (leagueService instanceof VolleyballService) {
             for (int i = 0; i < numOfTeams; i++) {
                 String teamName = scanner.nextLine();
-                if(!Validate.isNameValid(teamName)){
+                if (!Validate.isNameValid(teamName)) {
                     printValidationErr();
                     continue;
                 }
@@ -234,11 +236,11 @@ public class MainHandler {
         }
         league.setLeagueID(leagueService.addLeague(league));
         if (league.getLeagueID() != 0) {
-            System.out.println("League  " + league.getLeagueName() + " Created Successfully with "+league.getTeamList().size()+" Teams!");
+            System.out.println("--- League  " + league.getLeagueName() + " Created Successfully with " + league.getTeamList().size() + " Teams! ---");
             System.out.println("---------------------------------------");
             secondMenu();
         } else {
-            System.out.println("Unable to Create a New League");
+            System.out.println("*** Unable to Create a New League ***");
             firstMenu();
         }
     }
@@ -250,13 +252,13 @@ public class MainHandler {
         System.out.println("Enter Home Team Name: ");
         homeTeam = league.findTeam(scanner.nextLine());
         if (homeTeam == null) {
-            System.out.println("Team not in current League");
+            System.out.println("*** Team not in current League ***");
             return;
         }
         System.out.println("Enter Away Team Name: ");
         awayTeam = league.findTeam(scanner.nextLine());
         if (awayTeam == null) {
-            System.out.println("Team Not in Current League");
+            System.out.println("*** Team Not in Current League ***");
             return;
         }
         System.out.println("Enter the Score of the Match(EXP. 3:1) : ");
@@ -268,7 +270,7 @@ public class MainHandler {
 
         if (leagueService instanceof VolleyballService) {
             if (!Validate.isSetScoreValid(homeScore, awayScore)) {
-                System.out.println("Score Not Valid for a Volleyball Match");
+                System.out.println("*** Score Not Valid for a Volleyball Match ***");
                 return;
             }
         }
@@ -282,7 +284,7 @@ public class MainHandler {
             sets[0] = Integer.parseInt(splited1[0]);
             sets[1] = Integer.parseInt(splited1[1]);
             if (!Validate.isPoanValid(homeScore, awayScore, sets[0], sets[1])) {
-                System.out.println("The Poans Entered are NOT consistent with the Score Entered Above");
+                System.out.println("*** The Poans Entered are NOT consistent with the Score Entered Above ***");
                 return;
             }
             ((VolleyballTeam) homeTeam).setPoans(sets[0]);
@@ -290,9 +292,9 @@ public class MainHandler {
 
         }
         if (leagueService.addMatch(league, match))
-            System.out.println("New Match added Successfully");
+            System.out.println("--- New Match added Successfully ---");
         else
-            System.out.println("Match NOT added try again");
+            System.out.println("*** Match NOT added try again ***");
         System.out.println("---------------------------------------");
     }
 
@@ -303,12 +305,12 @@ public class MainHandler {
         Team delTeam = league.findTeam(delTeamName);
         if (delTeam != null) {
             if (leagueService.deleteTeam(delTeam)) {
-                System.out.println("Team Deleted Successfully");
+                System.out.println("--- Team Deleted Successfully ---");
                 league.deleteTeam(delTeam);
             } else
-                System.out.println("Unable to Delete Team");
+                System.out.println("*** Unable to Delete Team ***");
         } else
-            System.out.println("Team NOT Found");
+            System.out.println("*** Team NOT Found ***");
         System.out.println("---------------------------------------");
     }
 
@@ -325,15 +327,16 @@ public class MainHandler {
             int teamID = leagueService.addTeam(league, newTeam);
             newTeam.setTeamID(teamID);
             league.addTeam(newTeam);
-            System.out.println("Team " + newTeam.getTeamName() + " added Successfully!");
+            System.out.println("--- Team " + newTeam.getTeamName() + " added Successfully! ---");
             System.out.println("---------------------------------------");
         } else
             printValidationErr();
     }
 
     private void printValidationErr() {
-        System.out.println("Enter a Valid Name");
+        System.out.println("*** Enter a Valid Name ***");
         System.out.println("The length should be at least 5 characters");
         System.out.println("Special Characters are not allowed");
+        System.out.println("---------------------------------------");
     }
 }

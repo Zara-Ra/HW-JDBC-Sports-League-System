@@ -3,14 +3,14 @@ package ir.maktab.sports.service;
 import ir.maktab.sports.dao.League;
 import ir.maktab.sports.dao.Match;
 import ir.maktab.sports.dao.enums.Sports;
+import ir.maktab.sports.dao.team.Team;
+import ir.maktab.sports.dao.team.VolleyballTeam;
 import ir.maktab.sports.repository.LeagueRepository;
 import ir.maktab.sports.repository.MatchRepository;
 import ir.maktab.sports.repository.TeamRepository;
-import ir.maktab.sports.util.sortHelper.sortByPoints;
 import ir.maktab.sports.util.sortHelper.sortByPoan;
+import ir.maktab.sports.util.sortHelper.sortByPoints;
 import ir.maktab.sports.util.sortHelper.sortByScore;
-import ir.maktab.sports.dao.team.Team;
-import ir.maktab.sports.dao.team.VolleyballTeam;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -44,12 +44,12 @@ public class VolleyballService implements LeagueService {
 
     @Override
     public Team teamInfo(int ID) throws SQLException {
-        return teamRepository.teamByID(ID, Sports.VOLLEYBALL);
+        return teamRepository.findTeamByID(ID, Sports.VOLLEYBALL);
     }
 
     @Override
-    public List <Team> findTeamsByLeagueID(int leagueID) throws SQLException {
-        return teamRepository.teamsByLeagueID(leagueID,Sports.VOLLEYBALL);
+    public List<Team> findTeamsByLeagueID(int leagueID) throws SQLException {
+        return teamRepository.findTeamsByLeagueID(leagueID, Sports.VOLLEYBALL);
     }
 
     @Override
@@ -67,20 +67,20 @@ public class VolleyballService implements LeagueService {
             homeT.setWon(homeT.getWon() + 1);
             awayT.setLost(awayT.getLost() + 1);
             homeT.setPoints(homeT.getPoints() + 3);
-        } else if(match.getHomeTeamScore() == 3 && match.getAwayTeamScore() == 2 ) {
+        } else if (match.getHomeTeamScore() == 3 && match.getAwayTeamScore() == 2) {
             homeT.setWon(homeT.getWon() + 1);
             awayT.setLost(awayT.getLost() + 1);
             homeT.setPoints(homeT.getPoints() + 2);
             awayT.setPoints(awayT.getPoints() + 1);
-        } else if (awayT.getPoints() == 3 && homeT.getPoints()==1 || homeT.getPoints() == 0) {
+        } else if (awayT.getPoints() == 3 && homeT.getPoints() == 1 || homeT.getPoints() == 0) {
             awayT.setWon(awayT.getWon() + 1);
             homeT.setLost(homeT.getLost() + 1);
-            awayT.setPoints(awayT.getPoints()+3);
-        } else if (awayT.getPoints() == 3 && homeT.getPoints()==2) {
+            awayT.setPoints(awayT.getPoints() + 3);
+        } else if (awayT.getPoints() == 3 && homeT.getPoints() == 2) {
             awayT.setWon(awayT.getWon() + 1);
             homeT.setLost(homeT.getLost() + 1);
-            awayT.setPoints(awayT.getPoints()+2);
-            homeT.setPoints(homeT.getPoints()+1);
+            awayT.setPoints(awayT.getPoints() + 2);
+            homeT.setPoints(homeT.getPoints() + 1);
         }
         teamRepository.updateTeam(homeT, Sports.VOLLEYBALL);
         teamRepository.updateTeam(awayT, Sports.VOLLEYBALL);

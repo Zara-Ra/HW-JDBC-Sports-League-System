@@ -14,9 +14,9 @@ public class LeagueRepository {
         String sql = "INSERT INTO league (league_name,start_date,sport_type) VALUES (?,?,?)";
         Connection connection = AppConstant.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1,league.getLeagueName());
-        preparedStatement.setDate(2,league.getStartDate());
-        preparedStatement.setString(3,String.valueOf(league.getSportType()));
+        preparedStatement.setString(1, league.getLeagueName());
+        preparedStatement.setDate(2, league.getStartDate());
+        preparedStatement.setString(3, String.valueOf(league.getSportType()));
         preparedStatement.executeUpdate();
 
         String sqlForID = "SELECT league_id FROM league WHERE league_name = ?";
@@ -29,34 +29,36 @@ public class LeagueRepository {
         return result;
 
     }
+
     public List<League> getAllLeagues(Sports sports) throws SQLException {
         String sql = "SELECT league_name, start_date FROM league WHERE sport_type = ?";
         Connection connection = AppConstant.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1,sports.toString());
+        preparedStatement.setString(1, sports.toString());
         ResultSet resultSet = preparedStatement.executeQuery();
-        List <League> leagueList = new ArrayList<>();
-        while (resultSet.next()){
+        List<League> leagueList = new ArrayList<>();
+        while (resultSet.next()) {
             String name = resultSet.getString(1);
             Date date = resultSet.getDate(2);
-            League league = new League(date,name,sports);
+            League league = new League(date, name, sports);
             leagueList.add(league);
         }
         return leagueList;
     }
+
     public League findLeagueByName(String leagueName) throws SQLException {
         League result = null;
         String sql = "SELECT * FROM league WHERE league_name = ?";
         Connection connection = AppConstant.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1,leagueName);
+        preparedStatement.setString(1, leagueName);
         ResultSet resultSet = preparedStatement.executeQuery();
-        if(resultSet.next()){
+        if (resultSet.next()) {
             int league_id = resultSet.getInt(1);
             String league_name = resultSet.getString(2);
-            Date startDate =resultSet.getDate(3);
+            Date startDate = resultSet.getDate(3);
             Sports sportType = Sports.valueOf(resultSet.getString(4));
-            result = new League(league_id,startDate,leagueName,sportType);
+            result = new League(league_id, startDate, leagueName, sportType);
         }
         return result;
     }
