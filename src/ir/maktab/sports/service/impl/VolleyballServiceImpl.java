@@ -1,22 +1,23 @@
-package ir.maktab.sports.service;
+package ir.maktab.sports.service.impl;
 
-import ir.maktab.sports.dao.League;
-import ir.maktab.sports.dao.Match;
-import ir.maktab.sports.dao.enums.Sports;
-import ir.maktab.sports.dao.team.FootballTeam;
-import ir.maktab.sports.dao.team.Team;
-import ir.maktab.sports.repository.LeagueRepository;
-import ir.maktab.sports.repository.MatchRepository;
-import ir.maktab.sports.repository.TeamRepository;
-import ir.maktab.sports.util.sortHelper.sortByDiffGoal;
-import ir.maktab.sports.util.sortHelper.sortByPoints;
+import ir.maktab.sports.data.entity.League;
+import ir.maktab.sports.data.entity.Match;
+import ir.maktab.sports.data.enums.Sports;
+import ir.maktab.sports.data.entity.Team;
+import ir.maktab.sports.data.entity.VolleyballTeam;
+import ir.maktab.sports.data.repository.LeagueRepository;
+import ir.maktab.sports.data.repository.MatchRepository;
+import ir.maktab.sports.data.repository.TeamRepository;
+import ir.maktab.sports.service.LeagueService;
+import ir.maktab.sports.util.sorthelper.SortByPoan;
+import ir.maktab.sports.util.sorthelper.SortByPoints;
+import ir.maktab.sports.util.sorthelper.SortByScore;
 
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-public class FootballService implements LeagueService {
-
+public class VolleyballService implements LeagueService {
     final private LeagueRepository leagueRepository = new LeagueRepository();
     final private MatchRepository matchRepository = new MatchRepository();
     final private TeamRepository teamRepository = new TeamRepository();
@@ -44,45 +45,48 @@ public class FootballService implements LeagueService {
 
     @Override
     public Team teamInfo(int ID) throws SQLException {
-        return teamRepository.findTeamByID(ID, Sports.FOOTBALL);
+        return teamRepository.findTeamByID(ID, Sports.VOLLEYBALL);
     }
 
     @Override
     public List<Team> findTeamsByLeagueID(int leagueID) throws SQLException {
-        return teamRepository.findTeamsByLeagueID(leagueID, Sports.FOOTBALL);
+        return teamRepository.findTeamsByLeagueID(leagueID, Sports.VOLLEYBALL);
     }
 
     @Override
     public boolean addMatch(League league, Match match) throws SQLException {
-        FootballTeam homeT = (FootballTeam) league.findTeam(match.getHomeTeamID());
-        FootballTeam awayT = (FootballTeam) league.findTeam(match.getAwayTeamID());
+        VolleyballTeam homeT = (VolleyballTeam) league.findTeam(match.getHomeTeamID());
+        VolleyballTeam awayT = (VolleyballTeam) league.findTeam(match.getAwayTeamID());
 
         homeT.setPlayed(homeT.getPlayed() + 1);
         awayT.setPlayed(awayT.getPlayed() + 1);
 
-        homeT.setGoalsFor(homeT.getGoalsFor() + match.getHomeTeamScore());
-        homeT.setGoalsAgainst(homeT.getGoalsAgainst() + match.getAwayTeamScore());
+        homeT.setScoreSets(homeT.getScoreSets() + match.getHomeTeamScore());
+        awayT.setScoreSets(awayT.getScoreSets() + match.getAwayTeamScore());
 
-        awayT.setGoalsFor(awayT.getGoalsFor() + match.getAwayTeamScore());
-        awayT.setGoalsAgainst(awayT.getGoalsAgainst() + match.getHomeTeamScore());
-
-        if (match.getHomeTeamScore() > match.getAwayTeamScore()) {
+        if (match.getHomeTeamScore() == 3 && match.getAwayTeamScore() == 1 || match.getAwayTeamScore() == 0) {
             homeT.setWon(homeT.getWon() + 1);
             awayT.setLost(awayT.getLost() + 1);
             homeT.setPoints(homeT.getPoints() + 3);
-        } else if (match.getHomeTeamScore() == match.getAwayTeamScore()) {
-            homeT.setDrawn(homeT.getDrawn() + 1);
-            awayT.setDrawn(awayT.getDrawn() + 1);
-            homeT.setPoints(homeT.getPoints() + 1);
+        } else if (match.getHomeTeamScore() == 3 && match.getAwayTeamScore() == 2) {
+            homeT.setWon(homeT.getWon() + 1);
+            awayT.setLost(awayT.getLost() + 1);
+            homeT.setPoints(homeT.getPoints() + 2);
             awayT.setPoints(awayT.getPoints() + 1);
-        } else {
+        } else if (awayT.getPoints() == 3 && homeT.getPoints() == 1 || homeT.getPoints() == 0) {
             awayT.setWon(awayT.getWon() + 1);
             homeT.setLost(homeT.getLost() + 1);
             awayT.setPoints(awayT.getPoints() + 3);
+        } else if (awayT.getPoints() == 3 && homeT.getPoints() == 2) {
+            awayT.setWon(awayT.getWon() + 1);
+            homeT.setLost(homeT.getLost() + 1);
+            awayT.setPoints(awayT.getPoints() + 2);
+            homeT.setPoints(homeT.getPoints() + 1);
         }
-        teamRepository.updateTeam(homeT, Sports.FOOTBALL);
-        teamRepository.updateTeam(awayT, Sports.FOOTBALL);
-        return matchRepository.updateMatch(match, Sports.FOOTBALL);
+        teamRepository.updateTeam(homeT, Sports.VOLLEYBALL);
+        teamRepository.updateTeam(awayT, Sports.VOLLEYBALL);
+
+        return matchRepository.updateMatch(match, Sports.VOLLEYBALL);
     }
 
     @Override
@@ -110,13 +114,14 @@ public class FootballService implements LeagueService {
 
     @Override
     public void rankingTable(List<Team> teamList) {
-        Collections.sort(teamList, new sortByDiffGoal());
-        Collections.sort(teamList, new sortByPoints());
+        Collections.sort(teamList, new SortByPoan());
+        Collections.sort(teamList, new SortByScore());
+        Collections.sort(teamList, new SortByPoints());
     }
 
     @Override
     public List<League> previousLeagues() throws SQLException {
-        return leagueRepository.getAllLeagues(Sports.FOOTBALL);
+        return leagueRepository.getAllLeagues(Sports.VOLLEYBALL);
     }
 
     @Override
@@ -126,6 +131,6 @@ public class FootballService implements LeagueService {
 
     @Override
     public String toString() {
-        return "Football League";
+        return "Volleyball League";
     }
 }
